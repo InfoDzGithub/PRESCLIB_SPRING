@@ -32,8 +32,16 @@ public class Contenu implements Serializable{
   
 public Contenu() {
 	super();
-	// TODO Auto-generated constructor stub
+                 }
+
+
+public Contenu(Prescription prescription, Boolean etat) {
+	super();
+	this.prescription = prescription;
+	this.etat = etat;
 }
+
+
 public Long getId() {
 	return id;
 }

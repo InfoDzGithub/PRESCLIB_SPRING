@@ -20,6 +20,19 @@ public class Traitement extends Contenu implements Serializable{
 		// TODO Auto-generated constructor stub
 	}
   
+
+
+public Traitement(Prescription prescription, Boolean etat, String nom_traitement, String remarque, String voix,
+		int rythme) {
+	super(prescription, etat);
+	this.nom_traitement = nom_traitement;
+	this.remarque = remarque;
+	this.voix = voix;
+	this.rythme = rythme;
+}
+
+
+
 public String getNom_traitement() {
 	return nom_traitement;
 }

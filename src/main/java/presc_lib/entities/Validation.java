@@ -18,20 +18,36 @@ import javax.persistence.ManyToOne;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="TYPE_validation", discriminatorType = DiscriminatorType.STRING,length = 2)
 
-public class Validation implements Serializable{
+public abstract class Validation implements Serializable{
    
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	private Date date;
+	private Long heur;
 	@ManyToOne
 	@JoinColumn(name="id_contenu")
     private Contenu contenu;
-	private Date date;
-	private Long heur;
+	
 	@ManyToOne
 	@JoinColumn(name="id_infirmier")
     private User infirmier;
 	
+	
+	
+	
+	public Validation() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	public Validation(Contenu contenu, Date date, Long heur, User infirmier) {
+		super();
+		this.contenu = contenu;
+		this.date = date;
+		this.heur = heur;
+		this.infirmier = infirmier;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -72,8 +88,5 @@ public class Validation implements Serializable{
 		this.infirmier = infirmier;
 	}
 
-	public Validation() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+	
 }

@@ -41,14 +41,23 @@ public class Service implements Serializable{
 	  @OneToMany(mappedBy = "serv", fetch = FetchType.LAZY)
       private Collection<Prescription>prescriptions;
       
-      
-      
-     public Service() {
-  		super();
-  		// TODO Auto-generated constructor stub
-  	                  }
-     
-     public Collection<User_Service> getUser_services() {
+	  public Service() {
+	  		super();}
+	     
+	  
+	  
+	  
+     public Service(String nom, String telephone, User chefService) {
+		super();
+		this.nom = nom;
+		this.telephone = telephone;
+		this.chefService = chefService;
+	}
+
+
+
+
+	public Collection<User_Service> getUser_services() {
  		return user_services;
  	}
 

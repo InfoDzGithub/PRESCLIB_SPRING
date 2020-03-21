@@ -12,13 +12,14 @@ public class UserMetierImp implements IUserMetier{
 	private UserRepository userRepository;
 	@Override
 	public User save(User entity) {
-		
+		entity.setEtat(true);
 		return userRepository.save(entity);
 	}
 
 	@Override
 	public User update(Long id,User entity) {
 		entity.setId(id);
+		entity.setEtat(true);
 		return userRepository.save(entity);
 	}
 

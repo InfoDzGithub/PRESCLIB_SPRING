@@ -39,6 +39,24 @@ public class Patient implements Serializable{
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
+	
+	public Patient(int cNI, String profession, String nom, String prenom, String adress, Date date_naissance,
+			String sexe, String telephone, String group_sanguin, Service service) {
+		super();
+		CNI = cNI;
+		this.profession = profession;
+		this.nom = nom;
+		this.prenom = prenom;
+		this.adress = adress;
+		this.date_naissance = date_naissance;
+		this.sexe = sexe;
+		this.telephone = telephone;
+		this.group_sanguin = group_sanguin;
+		this.service = service;
+	}
+
+
 	public Collection<Prescription> getPrescriptions() {
 		return prescriptions;
 	}

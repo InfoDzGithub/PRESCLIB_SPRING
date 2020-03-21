@@ -27,7 +27,8 @@ public abstract class Prescription implements Serializable{
   private Long id;
   private Date date;
   private Boolean etat;
-  @ManyToOne
+  
+@ManyToOne
 	@JoinColumn(name="id_patient")
   private Patient patient;
   @ManyToOne
@@ -48,6 +49,14 @@ public abstract class Prescription implements Serializable{
 public Prescription() {
 	super();
 	// TODO Auto-generated constructor stub
+}
+public Prescription(Date date, Patient patient, Service serv, User medecin, User secretaire) {
+	super();
+	this.date = date;
+	this.patient = patient;
+	this.serv = serv;
+	this.medecin = medecin;
+	this.secretaire = secretaire;
 }
 public Long getId() {
 	return id;

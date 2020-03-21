@@ -33,17 +33,28 @@ public abstract class User implements Serializable{
 	
 	
 	
-	
+	public User() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	public User(String nom, String prenom, String adress, Date date_naissance, String role, String sexe,
+			String telephone, String email, String photo) {
+		super();
+		this.nom = nom;
+		this.prenom = prenom;
+		this.adress = adress;
+		this.date_naissance = date_naissance;
+		this.role = role;
+		this.sexe = sexe;
+		this.telephone = telephone;
+		this.email = email;
+		this.photo = photo;
+	}
 	public Boolean getEtat() {
 		return etat;
 	}
 	public void setEtat(Boolean etat) {
 		this.etat = etat;
-	}
-
-	public User() {
-		super();
-		// TODO Auto-generated constructor stub
 	}
 	public Long getId() {
 		return id;
