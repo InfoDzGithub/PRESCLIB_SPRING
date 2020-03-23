@@ -2,11 +2,15 @@ package presc_lib.metier;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import presc_lib.dao.PatientRepository;
 import presc_lib.entities.Patient;
 
-
+@Service
 public class PatientMetierImp implements IPatientMetier{
+	@Autowired
 	private PatientRepository patientRepository;
 	@Override
 	public Patient save(Patient entity) {
@@ -29,11 +33,11 @@ public class PatientMetierImp implements IPatientMetier{
 
 	@Override
 	public Patient getById(Long id) {
-		return patientRepository.getOne(id);
+		return patientRepository.findById(id).orElse(null);
 	}
 
 	@Override
-	public void delete(Long id) {
+	public void stop(Long id) {
 		
 		
 	}

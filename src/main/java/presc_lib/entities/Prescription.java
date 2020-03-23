@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
@@ -16,16 +17,35 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
+import com.sun.istack.NotNull;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="TYPE_PRESC", discriminatorType = DiscriminatorType.STRING,length = 4)
+
+@JsonTypeInfo(use=JsonTypeInfo.Id.NAME,include=JsonTypeInfo.As.PROPERTY,property="type_presc")
+@JsonSubTypes({
+	@Type(name="SOIN",value=Soin.class),
+	@Type(name="SUIV",value=Suivi.class),
+	@Type(name="MDCL",value=Medicale.class),
+	@Type(name="ALMT",value=Aliment.class)
+})
 public abstract class Prescription implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	
-  private Long id;
-  private Date date;
+	private Long id;
+	@Column(name="dateP")
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
+	@Temporal(TemporalType.DATE)
+	@NotNull
+  private Date dateP;
   private Boolean etat;
   
 @ManyToOne
@@ -52,7 +72,7 @@ public Prescription() {
 }
 public Prescription(Date date, Patient patient, Service serv, User medecin, User secretaire) {
 	super();
-	this.date = date;
+	this.dateP = date;
 	this.patient = patient;
 	this.serv = serv;
 	this.medecin = medecin;
@@ -64,11 +84,11 @@ public Long getId() {
 public void setId(Long id) {
 	this.id = id;
 }
-public Date getDate() {
-	return date;
+public Date getDateP() {
+	return dateP;
 }
-public void setDate(Date date) {
-	this.date = date;
+public void setDateP(Date date) {
+	this.dateP = date;
 }
 public Boolean getEtat() {
 	return etat;

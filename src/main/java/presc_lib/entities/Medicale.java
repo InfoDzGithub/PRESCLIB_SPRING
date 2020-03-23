@@ -8,6 +8,6 @@ import javax.persistence.Entity;
 @Entity
 @DiscriminatorValue("MDCL")
 
-public class Médicale extends Prescription implements Serializable{
+public class Medicale extends Prescription implements Serializable{
 
 }

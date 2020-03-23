@@ -2,11 +2,16 @@ package presc_lib.metier;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import presc_lib.dao.TraitementRepository;
 import presc_lib.entities.Traitement;
 
+@Service
 public class TraitementMetierImp  implements  ITraitementMetier
 {
+	@Autowired
      private TraitementRepository traitementRepository;
 	@Override
 	public Traitement save(Traitement entity) {
@@ -24,11 +29,11 @@ public class TraitementMetierImp  implements  ITraitementMetier
 	@Override
 	public Traitement getById(Long idT) {
 		
-		return traitementRepository.getOne(idT);
+		return traitementRepository.findById(idT).orElse(null);
 	}
 
 	@Override
-	public void delete(Long idT) {
+	public void stop(Long idT) {
 		traitementRepository.stopTraitement(idT);
 	}
 

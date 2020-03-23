@@ -8,5 +8,5 @@ public interface IGenericMetier<E> {
 	public E update(Long id,E entity);
 	public List<E> getAll();
 	public E getById(Long id);
-	public void delete(Long id);
+	public void stop(Long id);
 }

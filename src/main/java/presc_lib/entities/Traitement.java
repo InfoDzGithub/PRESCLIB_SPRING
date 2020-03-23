@@ -22,9 +22,9 @@ public class Traitement extends Contenu implements Serializable{
   
 
 
-public Traitement(Prescription prescription, Boolean etat, String nom_traitement, String remarque, String voix,
+public Traitement(Prescription prescription, String nom_traitement, String remarque, String voix,
 		int rythme) {
-	super(prescription, etat);
+	super(prescription);
 	this.nom_traitement = nom_traitement;
 	this.remarque = remarque;
 	this.voix = voix;

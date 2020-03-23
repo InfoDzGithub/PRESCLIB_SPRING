@@ -2,6 +2,8 @@ package presc_lib.dao;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -14,20 +16,23 @@ public interface PatientRepository extends JpaRepository<Patient, Long>{
 	@Query(value = "SELECT p FROM Patient p ORDER BY nom")
 	public List<Patient> findAllPatient();
 	/************************************************************************************/
-	@Query(value = "SELECT p FROM Patient p ORDER BY nom where p.etat=true")
+	@Query(value = "SELECT p FROM Patient p where p.etat=true ORDER BY nom")
 	public List<Patient> findHospitalizedPatient();
 	/**********************************************************************************/
+	@Transactional 
 	@Modifying
-	@Query(value = "update Patient p set p.etat = false where p.id = ?", 
+	@Query(value = "update Patient p set p.etat = false where p.id = :idP", 
 	  nativeQuery = true)
-	public void libererPatient( Long id);
+	public void libererPatient(@Param("idP")  Long idP);
 	/***********************************************************************************/
+	@Transactional 
 	@Modifying
 	@Query(value = "update Historique_Hospitalisation  h set "
-			+ "h.etat = false , h.date_sortie= SYSDATE() where h.etat=true and  h.id_patient = ?", 
+			+ "h.etat = false , h.date_sortie= SYSDATE() where h.etat=true and  h.id_patient = :idP", 
 	  nativeQuery = true)
-	public void sortir(Long id);
+	public void sortir(@Param("idP") Long idP);
 	/*********************************************************************************/
+	@Transactional 
 	@Modifying
 	@Query(
 	  value = 

@@ -19,8 +19,8 @@ public Tests()
 		// TODO Auto-generated constructor stub
 }
  
- public Tests(Prescription prescription, Boolean etat, String nom_test, int nbre_par_jr) {
-	super(prescription, etat);
+ public Tests(Prescription prescription, String nom_test, int nbre_par_jr) {
+	super(prescription);
 	this.nom_test = nom_test;
 	this.nbre_par_jr = nbre_par_jr;
 }

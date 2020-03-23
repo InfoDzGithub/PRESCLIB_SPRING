@@ -3,6 +3,7 @@ package presc_lib.entities;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
@@ -13,6 +14,11 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.sun.istack.NotNull;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -23,8 +29,17 @@ public abstract class Validation implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private Date date;
-	private Long heur;
+	@Column(name="dateV")
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
+    @Temporal(TemporalType.DATE)
+    @NotNull
+	private Date dateV;
+	
+	@Column(name="timeValidation")
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="HH:mm:ss")
+    @Temporal(TemporalType.TIME)
+    @NotNull
+	private Date timeValidation;
 	@ManyToOne
 	@JoinColumn(name="id_contenu")
     private Contenu contenu;
@@ -40,12 +55,12 @@ public abstract class Validation implements Serializable{
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Validation(Contenu contenu, Date date, Long heur, User infirmier) {
+	public Validation(Contenu contenu, User infirmier,Date dateV,Date timeValidation) {
 		super();
 		this.contenu = contenu;
-		this.date = date;
-		this.heur = heur;
 		this.infirmier = infirmier;
+		this.dateV=dateV;
+		this.timeValidation=timeValidation;
 	}
 
 	public Long getId() {
@@ -64,20 +79,20 @@ public abstract class Validation implements Serializable{
 		this.contenu = contenu;
 	}
 
-	public Date getDate() {
-		return date;
+	public Date getDateV() {
+		return dateV;
 	}
 
-	public void setDate(Date date) {
-		this.date = date;
+	public void setDateV(Date date) {
+		this.dateV = date;
 	}
 
-	public Long getHeur() {
-		return heur;
+	public Date getTimeValidation() {
+		return timeValidation;
 	}
 
-	public void setHeur(Long heur) {
-		this.heur = heur;
+	public void setHeur(Date timeValidation) {
+		this.timeValidation = timeValidation;
 	}
 
 	public User getInfirmier() {

@@ -1,12 +1,26 @@
 package presc_lib.entities;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.core.JsonToken;
+
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="TYPE_USER", discriminatorType = DiscriminatorType.STRING,length = 3)
+
+@JsonTypeInfo(use=JsonTypeInfo.Id.NAME,include=JsonTypeInfo.As.PROPERTY,property="type_user")
+@JsonSubTypes({
+	@Type(name="ADM",value=Admin.class),
+	@Type(name="MED",value=Medecin.class),
+	@Type(name="SCR",value=Secretaire.class),
+	@Type(name="INF",value=Infirmier.class)
+})
 public abstract class User implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

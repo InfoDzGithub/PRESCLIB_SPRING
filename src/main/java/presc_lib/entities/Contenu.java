@@ -35,10 +35,9 @@ public Contenu() {
                  }
 
 
-public Contenu(Prescription prescription, Boolean etat) {
+public Contenu(Prescription prescription) {
 	super();
 	this.prescription = prescription;
-	this.etat = etat;
 }
 
 

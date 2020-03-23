@@ -29,11 +29,11 @@ public class TestMetierImp implements ITestMetier {
 
 	@Override
 	public Tests getById(Long id) {
-		return testRepository.getOne(id);
+		return testRepository.findById(id).orElse(null);
 	}
 
 	@Override
-	public void delete(Long idT) {
+	public void stop(Long idT) {
 		testRepository.stopTests(idT);
 		
 	}
