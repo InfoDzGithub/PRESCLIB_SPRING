@@ -40,7 +40,7 @@ public class TraitementMetierImp  implements  ITraitementMetier
 	
 	@Override
 	public List<Traitement> getAllContentByPrescription(Long idP) {
-		return traitementRepository.findTraitmentByPrescription(idP);
+		return traitementRepository.findAllTraitmentByPrescription(idP);
 	}
 	
 	//on l'utilise pas
@@ -48,6 +48,12 @@ public class TraitementMetierImp  implements  ITraitementMetier
 	public List<Traitement> getAll() {
 		
 		return traitementRepository.findAll();
+	}
+
+	@Override
+	public List<Traitement> getActifContentByPrescription(Long idP) {
+		// TODO Auto-generated method stub
+		return traitementRepository.findActifTraitmentByPrescription(idP);
 	}
 
 }

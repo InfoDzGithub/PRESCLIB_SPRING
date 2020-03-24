@@ -135,6 +135,7 @@ public abstract class User implements Serializable{
 	public Collection<User_Service> getUser_services() {
 		return user_services;
 	}
+	
 	public void setUser_services(Collection<User_Service> user_services) {
 		this.user_services = user_services;
 	}

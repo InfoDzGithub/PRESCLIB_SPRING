@@ -2,10 +2,14 @@ package presc_lib.metier;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import presc_lib.dao.TestRepository;
 import presc_lib.entities.Tests;
-
+@Service
 public class TestMetierImp implements ITestMetier {
+	@Autowired
 	private TestRepository testRepository;
 
 	@Override
@@ -18,9 +22,10 @@ public class TestMetierImp implements ITestMetier {
 	public Tests update(Long id, Tests entity) {
 		entity.setId(id);
 		entity.setEtat(true);
-		return null;
+		return testRepository.save(entity);
 	}
 
+	//on l utilise pas
 	@Override
 	public List<Tests> getAll() {
 		// TODO Auto-generated method stub
@@ -40,7 +45,12 @@ public class TestMetierImp implements ITestMetier {
 
 	@Override
 	public List<Tests> getAllContentByPrescription(Long idP) {
-		return testRepository.findTestByPrescription(idP);
+		return testRepository.findAllTestByPrescription(idP);
+	}
+
+	@Override
+	public List<Tests> getActifContentByPrescription(Long idP) {
+		return testRepository.findActifTestByPrescription(idP);
 	}
 
 }

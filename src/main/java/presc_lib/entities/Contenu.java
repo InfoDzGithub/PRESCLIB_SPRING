@@ -14,6 +14,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSetter;
+
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 
@@ -47,9 +50,11 @@ public Long getId() {
 public void setId(Long id) {
 	this.id = id;
 }
+@JsonIgnore
 public Prescription getPrescription() {
 	return prescription;
 }
+@JsonSetter
 public void setPrescription(Prescription prescription) {
 	this.prescription = prescription;
 }
@@ -59,6 +64,7 @@ public Boolean getEtat() {
 public void setEtat(Boolean etat) {
 	this.etat = etat;
 }
+@JsonIgnore
 public Collection<Validation> getValidations() {
 	return validations;
 }
