@@ -13,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Patient implements Serializable{
 	@Id
@@ -31,6 +33,7 @@ public class Patient implements Serializable{
 	@ManyToOne
 	@JoinColumn(name="id_service")
 	private Service service;
+	
 	
 	@OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
 	 private Collection<Prescription>prescriptions;
@@ -57,6 +60,7 @@ public class Patient implements Serializable{
 	}
 
 
+	@JsonIgnore
 	public Collection<Prescription> getPrescriptions() {
 		return prescriptions;
 	}
@@ -129,6 +133,7 @@ public class Patient implements Serializable{
 	public void setEtat(Boolean etat) {
 		this.etat = etat;
 	}
+	@JsonIgnore
 	public Service getService() {
 		return service;
 	}

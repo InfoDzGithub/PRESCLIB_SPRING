@@ -47,7 +47,7 @@ public class UserRestService {
 		return iUserMetier.getById(id);
 	}
 
-	@RequestMapping(value = "/stopUsers/{id}",method = RequestMethod.PUT)
+	@RequestMapping(value = "/archiveUser/{id}",method = RequestMethod.PUT)
 	public void stop(@PathVariable Long id) {
 		iUserMetier.stop(id);
 	}

@@ -3,15 +3,21 @@ package presc_lib.metier;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
+import presc_lib.dao.Historique_HospitalisationRepository;
 import presc_lib.dao.PatientRepository;
+import presc_lib.entities.Historique_Hospitalisation;
 import presc_lib.entities.Patient;
 
 @Service
 public class PatientMetierImp implements IPatientMetier{
 	@Autowired
 	private PatientRepository patientRepository;
+	@Autowired
+	private Historique_HospitalisationRepository historiqueHRepository;
+	
 	@Override
 	public Patient save(Patient entity) {
 		entity.setEtat(true);
@@ -43,28 +49,31 @@ public class PatientMetierImp implements IPatientMetier{
 	}
 
 	@Override
-	public void sortirPatient(Long id) {
-		patientRepository.sortir(id);
-		patientRepository.libererPatient(id);
-	}
-
-	@Override
-	public void affecterPatient(Long idP, Long idS, Long idM, int num_chambre) {
-		patientRepository.affecter(idP, idS, idM, num_chambre);
-		
-	}
-
-	@Override
-	public void transfererPatient(Long idP, Long idS, Long idM, int num_chambre) {
-		sortirPatient( idP);
-		affecterPatient(idP,idS, idM,num_chambre);
-		
-	}
-
-	@Override
 	public List<Patient> hospitalizedPatient() {
 		
 		return patientRepository.findHospitalizedPatient();
+	}
+
+	@Override
+	public void sortirPatient(Long idP) {
+		historiqueHRepository.sortir(idP);
+		patientRepository.libererPatient(idP);
+		
+	}
+
+	@Override
+	public Historique_Hospitalisation affecterPatient(Historique_Hospitalisation entity) {
+		System.out.println("service  id: "+entity.getService().getId());
+		patientRepository.deLibererPatient(entity.getPatient().getId(),entity.getService().getId());
+		entity.setEtat(true);
+		return historiqueHRepository.save(entity);
+	}
+
+	@Override
+	public Historique_Hospitalisation transfererPatient(Long idP, Historique_Hospitalisation entity) {
+		historiqueHRepository.sortir(idP);
+		
+		return affecterPatient(entity);
 	}
 
 }

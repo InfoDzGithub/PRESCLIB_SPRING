@@ -42,7 +42,7 @@ public Prescription getById(@PathVariable Long id) {
 	return iPrescriptionMetier.getById(id);
 }
 
-@RequestMapping(value = "/stopPrescriptions/{id}",method = RequestMethod.PUT)
+@RequestMapping(value = "/archivePrescription/{id}",method = RequestMethod.PUT)
 public void stop(@PathVariable Long id) {
 	iPrescriptionMetier.stop(id);
 }

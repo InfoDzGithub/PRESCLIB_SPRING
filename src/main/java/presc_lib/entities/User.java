@@ -2,6 +2,7 @@ package presc_lib.entities;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -130,6 +131,7 @@ public abstract class User implements Serializable{
 	public void setPhoto(String photo) {
 		this.photo = photo;
 	}
+	@JsonIgnore
 	public Collection<User_Service> getUser_services() {
 		return user_services;
 	}

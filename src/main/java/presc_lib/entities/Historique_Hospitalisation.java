@@ -17,22 +17,39 @@ import com.sun.istack.NotNull;
 
 @Entity
 public class Historique_Hospitalisation {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-  @ManyToOne
+    @ManyToOne
 	@JoinColumn(name="id_patient")
   private Patient patient;
-  @ManyToOne
+    @ManyToOne
 	@JoinColumn(name="id_service")
   private Service service;
   private Date date_entre;
   private Date date_sortie;
   private int num_chambre;
   private Boolean etat;
-  @ManyToOne
+    @ManyToOne
 	@JoinColumn(name="id_medecin")
   private User medecin_traitant;
+  
+  
+
+  
+  public Historique_Hospitalisation(Patient patient, Service service, Date date_entre, int num_chambre,
+			User medecin_traitant) {
+		super();
+		this.patient = patient;
+		this.service = service;
+		this.date_entre = date_entre;
+		this.num_chambre = num_chambre;
+		this.medecin_traitant = medecin_traitant;
+	}
+public Historique_Hospitalisation()
+  {
+		super();
+  }
 public Long getId() {
 	return id;
 }
@@ -81,10 +98,7 @@ public User getMedecin_traitant() {
 public void setMedecin_traitant(User medecin_traitant) {
 	this.medecin_traitant = medecin_traitant;
 }
-public Historique_Hospitalisation() {
-	super();
-	// TODO Auto-generated constructor stub
-}
+
   
   
 }
