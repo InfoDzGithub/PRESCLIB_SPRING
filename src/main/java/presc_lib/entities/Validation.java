@@ -18,27 +18,34 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.sun.istack.NotNull;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name="TYPE_validation", discriminatorType = DiscriminatorType.STRING,length = 2)
-
+@DiscriminatorColumn(name="TYPE_VAL", discriminatorType = DiscriminatorType.STRING,length = 2)
+@JsonTypeInfo(use=JsonTypeInfo.Id.NAME,include=JsonTypeInfo.As.PROPERTY,property="type_val")
+@JsonSubTypes({
+	@Type(name="VB",value=Valeur_bool.class),
+	@Type(name="VN",value=Valeur_num.class)
+})
 public abstract class Validation implements Serializable{
    
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@Column(name="dateV")
+	//@Column(name="dateV")
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
     @Temporal(TemporalType.DATE)
-    @NotNull
+    //@NotNull
 	private Date dateV;
 	
-	@Column(name="timeValidation")
+	//@Column(name="timeValidation")
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="HH:mm:ss")
     @Temporal(TemporalType.TIME)
-    @NotNull
+    //@NotNull
 	private Date timeValidation;
 	@ManyToOne
 	@JoinColumn(name="id_contenu")

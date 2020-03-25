@@ -1,6 +1,7 @@
 package presc_lib.entities;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -11,11 +12,7 @@ public class Valeur_num extends Validation implements Serializable{
    
 	private double val_num;
 
-	public Valeur_num() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
+	
 	public double getVal_num() {
 		return val_num;
 	}
@@ -23,4 +20,14 @@ public class Valeur_num extends Validation implements Serializable{
 	public void setVal_num(double val_num) {
 		this.val_num = val_num;
 	}
+	public Valeur_num() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public Valeur_num(Contenu contenu, User infirmier, Date dateV, Date timeValidation, double val_num) {
+		super(contenu, infirmier, dateV, timeValidation);
+		this.val_num = val_num;
+	}
+
 }

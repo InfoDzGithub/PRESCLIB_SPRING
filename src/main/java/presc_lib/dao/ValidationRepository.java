@@ -11,7 +11,7 @@ import presc_lib.entities.Validation;
 
 public interface ValidationRepository extends JpaRepository<Validation, Long>
 {
-	@Query(value = "SELECT u FROM Validation u where u.id_contenu= :idC",nativeQuery = true)
+	@Query(value = "SELECT * FROM Validation u where u.id_contenu= :idC",nativeQuery = true)
 	public List<Validation> findValuesByContent(@Param("idC")  Long idC);
 	
 	
