@@ -21,8 +21,8 @@ public class Valeur_bool extends Validation implements Serializable{
 		this.val_bool = val_bool;
 	}
 
-	public Valeur_bool(Contenu contenu, User infirmier, Date dateV, Date timeValidation, Boolean val_bool) {
-		super(contenu, infirmier, dateV, timeValidation);
+	public Valeur_bool(Contenu contenu, User infirmier, Boolean val_bool) {
+		super(contenu, infirmier);
 		this.val_bool = val_bool;
 	}
 

@@ -2,15 +2,15 @@ package presc_lib.entities;
 
 import javax.persistence.*;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.core.JsonToken;
-
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
+import com.sun.istack.NotNull;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="TYPE_USER", discriminatorType = DiscriminatorType.STRING,length = 3)
@@ -29,11 +29,17 @@ public abstract class User implements Serializable{
 	private String nom;
 	private String prenom;
 	private String adress;
+
+	@Column(name="date_naissance")
+	 @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
+	 @Temporal(TemporalType.DATE)
+	 @NotNull
 	private Date date_naissance;
 	private String role;
 	private String sexe;
 	private String telephone;
 	private String email;
+	private String password;
 	private String photo;
 	private Boolean etat;
 	/*
@@ -50,19 +56,19 @@ public abstract class User implements Serializable{
 	
 	public User() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
-	public User(String nom, String prenom, String adress, Date date_naissance, String role, String sexe,
-			String telephone, String email, String photo) {
+	public User(String nom, String prenom, Date date_naissance,String adress, String role, String sexe,
+			String telephone, String email,String pwd, String photo) {
 		super();
 		this.nom = nom;
 		this.prenom = prenom;
 		this.adress = adress;
-		this.date_naissance = date_naissance;
+		this.date_naissance = date_naissance; 
 		this.role = role;
 		this.sexe = sexe;
 		this.telephone = telephone;
 		this.email = email;
+		this.password=pwd;
 		this.photo = photo;
 	}
 	public Boolean getEtat() {
@@ -76,6 +82,12 @@ public abstract class User implements Serializable{
 	}
 	public void setId(Long id) {
 		this.id = id;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	public String getNom() {
 		return nom;

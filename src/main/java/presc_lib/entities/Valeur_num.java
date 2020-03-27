@@ -25,8 +25,8 @@ public class Valeur_num extends Validation implements Serializable{
 		// TODO Auto-generated constructor stub
 	}
 
-	public Valeur_num(Contenu contenu, User infirmier, Date dateV, Date timeValidation, double val_num) {
-		super(contenu, infirmier, dateV, timeValidation);
+	public Valeur_num(Contenu contenu, User infirmier, double val_num) {
+		super(contenu, infirmier);
 		this.val_num = val_num;
 	}
 

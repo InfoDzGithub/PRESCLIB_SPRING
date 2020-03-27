@@ -1,5 +1,6 @@
 package presc_lib.metier;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,9 +64,10 @@ public class PatientMetierImp implements IPatientMetier{
 
 	@Override
 	public Historique_Hospitalisation affecterPatient(Historique_Hospitalisation entity) {
-		System.out.println("service  id: "+entity.getService().getId());
+		//System.out.println("service  id: "+entity.getService().getId());
 		patientRepository.deLibererPatient(entity.getPatient().getId(),entity.getService().getId());
 		entity.setEtat(true);
+		entity.setDate_entre(new Date());
 		return historiqueHRepository.save(entity);
 	}
 
@@ -74,6 +76,12 @@ public class PatientMetierImp implements IPatientMetier{
 		historiqueHRepository.sortir(idP);
 		
 		return affecterPatient(entity);
+	}
+
+	@Override
+	public List<Patient> searchPatient(String mc) {
+		
+		return patientRepository.searchPatient(mc);
 	}
 
 }

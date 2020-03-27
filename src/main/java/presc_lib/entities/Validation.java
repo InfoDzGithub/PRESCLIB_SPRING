@@ -62,12 +62,11 @@ public abstract class Validation implements Serializable{
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Validation(Contenu contenu, User infirmier,Date dateV,Date timeValidation) {
+	public Validation(Contenu contenu, User infirmier) {
 		super();
 		this.contenu = contenu;
 		this.infirmier = infirmier;
-		this.dateV=dateV;
-		this.timeValidation=timeValidation;
+		
 	}
 
 	public Long getId() {

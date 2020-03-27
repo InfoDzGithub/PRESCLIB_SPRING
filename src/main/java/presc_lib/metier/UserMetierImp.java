@@ -1,12 +1,15 @@
 package presc_lib.metier;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import presc_lib.dao.UserRepository;
+import presc_lib.entities.Patient;
 import presc_lib.entities.User;
+import presc_lib.exception.EntityException;
 @Service
 public class UserMetierImp implements IUserMetier{
     @Autowired
@@ -52,5 +55,18 @@ public class UserMetierImp implements IUserMetier{
 		userRepository.stopUserfromService(idU, idS);
 		
 	}
+	@Override
+	public List<User> searchUser(String mc) {
+		
+		return userRepository.searchUser(mc);
+	}
+
+	@Override
+	public User login(String email, String password)// throws EntityException 
+	{
+		
+		return userRepository.login(email, password);
+	}
+
 
 }

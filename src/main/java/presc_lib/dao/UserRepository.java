@@ -9,12 +9,24 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import presc_lib.entities.Patient;
 import presc_lib.entities.User;
 
 public interface UserRepository extends JpaRepository<User, Long>{
 	@Query(value = "SELECT u FROM User u where u.etat=true ORDER BY nom")
 	public List<User> findAllUsers();
 	
+	/*******************************************************************/
+	@Query(value = "SELECT p FROM User p where p.nom like :x ORDER BY nom")
+	public List<User> searchUser(@Param("x") String x);
+	/**********************************************************************/
+	
+	@Query(value = "SELECT p FROM User p where p.email= :email and p.password=:pwd ")
+	public User login(@Param("email") String email,@Param("pwd") String password);
+	
+	
+	
+	/*************************************************************************/
 	@Transactional 
 	@Modifying
 	@Query(value = "update User u set u.etat = false where u.id = :idU"

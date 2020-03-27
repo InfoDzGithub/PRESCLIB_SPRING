@@ -16,6 +16,10 @@ public interface PatientRepository extends JpaRepository<Patient, Long>{
 	@Query(value = "SELECT p FROM Patient p ORDER BY nom")
 	public List<Patient> findAllPatient();
 	/************************************************************************************/
+	@Query(value = "SELECT p FROM Patient p where p.nom like :x ORDER BY nom")
+	public List<Patient> searchPatient(@Param("x") String x);
+	
+	/*************************************************************************************/
 	@Query(value = "SELECT p FROM Patient p where p.etat=true ORDER BY nom")
 	public List<Patient> findHospitalizedPatient();
 	/**********************************************************************************/

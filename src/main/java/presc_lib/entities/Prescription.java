@@ -70,9 +70,9 @@ public Prescription() {
 	super();
 	// TODO Auto-generated constructor stub
 }
-public Prescription(Date date, Patient patient, Service serv, User medecin, User secretaire) {
+public Prescription(Patient patient, Service serv, User medecin, User secretaire) {
 	super();
-	this.dateP = date;
+	//this.dateP = date;
 	this.patient = patient;
 	this.serv = serv;
 	this.medecin = medecin;

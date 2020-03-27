@@ -9,7 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import presc_lib.entities.Tests;
 import presc_lib.entities.Traitement;
+import presc_lib.exception.EntityException;
+import presc_lib.exception.ResourceNotFoundException;
 import presc_lib.metier.ITraitementMetier;
 
 @RestController
@@ -44,10 +47,21 @@ public class TraitementRestService {
 	}
 
 	@RequestMapping(value = "/traitements/{id}",method = RequestMethod.GET)
-	public Traitement getById(@PathVariable Long id) {
-		return iTraitementMetier.getById(id);
-	}
-
+	public Traitement getById(@PathVariable Long id) throws EntityException,ResourceNotFoundException {
+		
+			try {
+				Traitement traitemnt= iTraitementMetier.getById(id);
+							if(traitemnt==null)
+							{
+								
+								throw new ResourceNotFoundException("Traitement not found");
+							}
+							return traitemnt;
+				
+			} catch (EntityException e) {
+				throw new EntityException("Internal Server Exception while getting exception");
+					}
+		}
 	@RequestMapping(value = "/stopTraitement/{id}",method = RequestMethod.PUT)
 	public void stop(@PathVariable Long id) {
 		iTraitementMetier.stop(id);

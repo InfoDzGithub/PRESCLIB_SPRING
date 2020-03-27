@@ -1,5 +1,6 @@
 package presc_lib.metier;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,8 @@ private ValidationRepository validationRepository;
 	public Validation save(Validation entity) 
 	      {
 		//date & heur
-		//entity.setDateV(date);
-		//entity.setDateV(date);
+		entity.setHeur(new Date());
+		entity.setDateV(new Date());
 		return validationRepository.save(entity);
 	}
 

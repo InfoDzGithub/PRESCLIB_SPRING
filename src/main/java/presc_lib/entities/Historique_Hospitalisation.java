@@ -37,12 +37,12 @@ public class Historique_Hospitalisation {
   
 
   
-  public Historique_Hospitalisation(Patient patient, Service service, Date date_entre, int num_chambre,
+  public Historique_Hospitalisation(Patient patient, Service service,int num_chambre,
 			User medecin_traitant) {
 		super();
 		this.patient = patient;
 		this.service = service;
-		this.date_entre = date_entre;
+		//this.date_entre = date_entre;
 		this.num_chambre = num_chambre;
 		this.medecin_traitant = medecin_traitant;
 	}

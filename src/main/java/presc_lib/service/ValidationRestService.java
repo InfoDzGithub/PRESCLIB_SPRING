@@ -9,7 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import presc_lib.entities.Tests;
 import presc_lib.entities.Validation;
+import presc_lib.exception.EntityException;
+import presc_lib.exception.ResourceNotFoundException;
 import presc_lib.metier.IValidationMetier;
 
 @RestController 
@@ -27,7 +30,7 @@ public class ValidationRestService {
 		return iValidationMetier.update(id, entity);
 	}
 
-	/*GetALL
+	/***GetALL
 	 * @RequestMapping(value = "validations",method = RequestMethod.GET) public
 	 * List<Validation> getAll() { return iValidationMetier.getAll(); }
 	 */
@@ -38,8 +41,19 @@ public class ValidationRestService {
 	}
     
 	@RequestMapping(value = "/validations/{id}",method = RequestMethod.GET)
-	public Validation getById(@PathVariable  Long id) {
-		return iValidationMetier.getById(id);
+	public Validation getById(@PathVariable  Long id) throws EntityException,ResourceNotFoundException {
+		try {
+			Validation v=iValidationMetier.getById(id);
+						if(v==null)
+						{
+							
+							throw new ResourceNotFoundException("Value not found");
+						}
+						return v;
+			
+		} catch (EntityException e) {
+			throw new EntityException("Internal Server Exception while getting exception");
+				}
 	}
 
 	/***stop validation
