@@ -1,7 +1,12 @@
 package presc_lib.metier;
 
+import java.nio.charset.Charset;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.List;
+
+import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,10 +67,19 @@ public class UserMetierImp implements IUserMetier{
 	}
 
 	@Override
-	public User login(String email, String password)// throws EntityException 
+	public User login(String email, String password) // throws EntityException 
 	{
-		
-		return userRepository.login(email, password);
+		String pwd="";
+		MessageDigest md;
+		try {
+			md = MessageDigest.getInstance("MD5");
+			pwd = (new HexBinaryAdapter()).marshal(md.digest(password.getBytes(Charset.forName("UTF-8"))));
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+		return userRepository.login(email, pwd);
 	}
 
 

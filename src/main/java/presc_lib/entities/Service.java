@@ -13,6 +13,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSetter;
 @Entity
 
 public class Service implements Serializable{
@@ -56,7 +59,7 @@ public class Service implements Serializable{
 
 
 
-
+    @JsonIgnore
 	public Collection<User_Service> getUser_services() {
  		return user_services;
  	}
@@ -64,7 +67,8 @@ public class Service implements Serializable{
  	public void setUser_services(Collection<User_Service> user_services) {
  		this.user_services = user_services;
  	}
-      
+    
+ 	@JsonIgnore
 	public Collection<Prescription> getPrescriptions() {
 		return prescriptions;
 	}
@@ -80,6 +84,7 @@ public class Service implements Serializable{
 	public void setEtat(Boolean etat) {
 		this.etat = etat;
 	}
+	@JsonIgnore
 	public Collection<Patient> getPatients() {
 		return patients;
 	}
@@ -102,9 +107,11 @@ public class Service implements Serializable{
 		this.telephone = telephone;
 	}
 	
+	
 	public User getChefService() {
 		return chefService;
 	}
+	
 	public void setChefService(User chefService) {
 		this.chefService = chefService;
 	}

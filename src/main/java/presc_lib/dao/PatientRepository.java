@@ -25,7 +25,7 @@ public interface PatientRepository extends JpaRepository<Patient, Long>{
 	/**********************************************************************************/
 	@Transactional 
 	@Modifying
-	@Query(value = "update Patient p set p.etat = false where p.id = :idP", 
+	@Query(value = "update Patient p set p.etat = false,p.id_service=null where p.id = :idP", 
 	  nativeQuery = true)
 	public void libererPatient(@Param("idP")  Long idP);
 	/***********************************************************************************/

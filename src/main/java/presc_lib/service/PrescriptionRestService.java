@@ -80,24 +80,7 @@ public void stop(@PathVariable Long id) {
 	iPrescriptionMetier.stop(id);
 }
 
-/*
-@RequestMapping(value = "/presc/{id}",method = RequestMethod.GET)
-public Prescription getId(@PathVariable Long id)throws EntityException,ResourceNotFoundException {
-	//return iPrescriptionMetier.getId(id);
-	
-	 try {
-			Prescription presc=iPrescriptionMetier.getId(id);
-						if(presc==null)
-						{
-							
-							throw new ResourceNotFoundException("Prescription not found");
-						}
-						return presc;
-			
-		} catch (EntityException e) {
-			throw new EntityException("Internal Server Exception while getting exception");
-				}
-}*/
+
 
 
 

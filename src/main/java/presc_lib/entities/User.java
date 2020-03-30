@@ -1,16 +1,28 @@
 package presc_lib.entities;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 
 import java.io.Serializable;
+import java.nio.charset.Charset;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Collection;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.sun.istack.NotNull;
+
+import net.bytebuddy.implementation.bind.annotation.IgnoreForBinding;
+
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="TYPE_USER", discriminatorType = DiscriminatorType.STRING,length = 3)
@@ -42,6 +54,8 @@ public abstract class User implements Serializable{
 	private String password;
 	private String photo;
 	private Boolean etat;
+	@javax.persistence.Transient 
+	private String passwordTemporelle;
 	/*
 	@ManyToMany
 	@JoinTable(
@@ -83,11 +97,22 @@ public abstract class User implements Serializable{
 	public void setId(Long id) {
 		this.id = id;
 	}
+	@XmlElement(name = "Password")
 	public String getPassword() {
-		return password;
+		
+		return passwordTemporelle;
 	}
+	
 	public void setPassword(String password) {
-		this.password = password;
+		passwordTemporelle = password;
+		 try {
+		       MessageDigest md = MessageDigest.getInstance("MD5");
+		        this.password = (new HexBinaryAdapter()).marshal(md.digest(password.getBytes(Charset.forName("UTF-8"))));
+		    
+			 
+		    } catch (NoSuchAlgorithmException ex) {
+		        Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+		    }
 	}
 	public String getNom() {
 		return nom;
