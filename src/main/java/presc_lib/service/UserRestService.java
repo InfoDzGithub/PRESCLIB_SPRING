@@ -1,6 +1,7 @@
 package presc_lib.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,12 +17,16 @@ import presc_lib.entities.User;
 import presc_lib.exception.EntityException;
 import presc_lib.exception.ResourceNotFoundException;
 import presc_lib.metier.IUserMetier;
+import presc_lib.metier.MailService;
 
 @RestController
 public class UserRestService {
 	@Autowired
 	private IUserMetier iUserMetier;
 
+	@Autowired
+	private MailService mailService;
+	
 	@RequestMapping(value = "/users",method = RequestMethod.POST)
 	public User save(@RequestBody User entity) {
 		return iUserMetier.save(entity);
@@ -87,7 +92,7 @@ public class UserRestService {
 			throw new EntityException("Internal Server Exception while getting exception");
 				}
 	}
-//http://localhost:8080/login?email=i@gmail.com&password=15kl
+
 	@RequestMapping(value = "/login",method = RequestMethod.GET)
 	public User login(@RequestParam(name="email") String email,@RequestParam(name="password") String password) throws EntityException,ResourceNotFoundException {
 		
@@ -105,5 +110,35 @@ public class UserRestService {
 			throw new EntityException("Internal Server Exception while getting exception");
 				}
 	}
+
+	@RequestMapping(value = "/forgetPassword",method = RequestMethod.GET)
+    public void forgetPassword(@RequestParam(name="email")  String email) throws Exception
+    {
+    	
+    	try {
+    		User user= iUserMetier.findUserByEmail(email);
+						if(user==null)
+						{
+							
+							throw new ResourceNotFoundException("You haven't account sorry!");
+						}
+                         String content="Bonjour "+user.getNom() +"Votre password perdu: "+user.getPassword();
+						mailService.send(user.getEmail(), "bouchekiflatifa13@gmail.com", "Recuperation de mot de passe oublier", content);
+			
+		} catch (EntityException e) {
+			throw new EntityException("Internal Server Exception while getting exception");
+				}
+    }
+
+
+
+
+
+
+
+
+
+
+
 
 }

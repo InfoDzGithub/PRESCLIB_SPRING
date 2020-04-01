@@ -1,6 +1,7 @@
 package presc_lib.dao;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -21,10 +22,12 @@ public interface UserRepository extends JpaRepository<User, Long>{
 	public List<User> searchUser(@Param("x") String x);
 	/**********************************************************************/
 	
-	@Query(value = "SELECT p FROM User p where p.email= :email and p.password=:pwd ")
+	@Query(value = "SELECT p FROM User p where p.email= :email and p.password=:pwd and p.etat=true")
 	public User login(@Param("email") String email,@Param("pwd") String password);
 	
-	
+	/**************************************************************************/
+	@Query(value = "SELECT u FROM User u where u.email= :email")
+	User findByEmail(@Param("email")  String email);
 	
 	/*************************************************************************/
 	@Transactional 

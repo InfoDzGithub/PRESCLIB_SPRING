@@ -1,5 +1,6 @@
 package presc_lib.entities;
 
+
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
@@ -15,13 +16,10 @@ import java.util.logging.Logger;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.sun.istack.NotNull;
-
-import net.bytebuddy.implementation.bind.annotation.IgnoreForBinding;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -54,7 +52,8 @@ public abstract class User implements Serializable{
 	private String password;
 	private String photo;
 	private Boolean etat;
-	@javax.persistence.Transient 
+	
+	@Transient 
 	private String passwordTemporelle;
 	/*
 	@ManyToMany
@@ -72,7 +71,7 @@ public abstract class User implements Serializable{
 		super();
 	}
 	public User(String nom, String prenom, Date date_naissance,String adress, String role, String sexe,
-			String telephone, String email,String pwd, String photo) {
+			String telephone, String email, String photo) {
 		super();
 		this.nom = nom;
 		this.prenom = prenom;
@@ -82,7 +81,7 @@ public abstract class User implements Serializable{
 		this.sexe = sexe;
 		this.telephone = telephone;
 		this.email = email;
-		this.password=pwd;
+		//this.password=pwd;String pwd,
 		this.photo = photo;
 	}
 	public Boolean getEtat() {
@@ -99,12 +98,13 @@ public abstract class User implements Serializable{
 	}
 	@XmlElement(name = "Password")
 	public String getPassword() {
-		
-		return passwordTemporelle;
+		//return passwordTemporelle;
+		return password;
 	}
 	
 	public void setPassword(String password) {
 		passwordTemporelle = password;
+		
 		 try {
 		       MessageDigest md = MessageDigest.getInstance("MD5");
 		        this.password = (new HexBinaryAdapter()).marshal(md.digest(password.getBytes(Charset.forName("UTF-8"))));
@@ -176,5 +176,7 @@ public abstract class User implements Serializable{
 	public void setUser_services(Collection<User_Service> user_services) {
 		this.user_services = user_services;
 	}
+	
+	
 	
 }
