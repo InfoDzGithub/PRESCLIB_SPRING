@@ -54,7 +54,14 @@ public abstract class User implements Serializable{
 	private Boolean etat;
 	
 	@Transient 
-	private String passwordTemporelle;
+	private  String passwordTemporelle="";
+	/*public  String getPasswordTemporelle() {
+		return passwordTemporelle;
+	}
+	public void setPasswordTemporelle(String passwordTemporelle) {
+		this.passwordTemporelle = passwordTemporelle;
+	}*/
+
 	/*
 	@ManyToMany
 	@JoinTable(
@@ -81,7 +88,6 @@ public abstract class User implements Serializable{
 		this.sexe = sexe;
 		this.telephone = telephone;
 		this.email = email;
-		//this.password=pwd;String pwd,
 		this.photo = photo;
 	}
 	public Boolean getEtat() {
@@ -98,7 +104,6 @@ public abstract class User implements Serializable{
 	}
 	@XmlElement(name = "Password")
 	public String getPassword() {
-		//return passwordTemporelle;
 		return password;
 	}
 	

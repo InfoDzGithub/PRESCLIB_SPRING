@@ -6,12 +6,16 @@ import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
 import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import presc_lib.dao.UserRepository;
@@ -24,6 +28,7 @@ public class UserMetierImp implements IUserMetier{
 	private UserRepository userRepository;
     @Autowired
     private MailService mailService;
+    
 	@Override
 	public User save(User entity) {
 		long code = ThreadLocalRandom.current().nextLong(10000,99999);
@@ -33,9 +38,10 @@ public class UserMetierImp implements IUserMetier{
 		String password=strDate+code;
 		entity.setEtat(true);
 		entity.setPassword(password);
+		//entity.setPasswordTemporelle(password);
 		String content="Bonjour, \n"+entity.getNom()+" "+entity.getPrenom()+"\n"+"  Voici Votre mot de passe: "+password;
 		try {
-			mailService.send(entity.getEmail(), "bouchekiflatifa13@gmail.com", "Envoie de mpt passe", content);
+			mailService.send(entity.getEmail(), "a.presclib@gmail.com", "Envoie de mpt passe", content);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -64,6 +70,7 @@ public class UserMetierImp implements IUserMetier{
 	@Override
 	public void stop(Long id)
 	{
+		
 		userRepository.archiverUser(id);
 	}
 
@@ -75,14 +82,12 @@ public class UserMetierImp implements IUserMetier{
 
 	@Override
 	public void stopUserFromSerice(Long idU, Long idS) {
+		
 		userRepository.stopUserfromService(idU, idS);
 		
-	}
-	@Override
-	public List<User> searchUser(String mc) {
 		
-		return userRepository.searchUser(mc);
 	}
+	
 
 	@Override
 	public User login(String email, String password) // throws EntityException 
@@ -105,6 +110,31 @@ public class UserMetierImp implements IUserMetier{
 	public User findUserByEmail(String email) {
 		return userRepository.findByEmail(email);
 	}
+
+	@Override
+	public Page<User> searchUser(String mc, Pageable p)// throws EntityException
+	{
+		
+		return userRepository.searchUser(mc,p);
+	}
+
+	@Override
+	public void enableUser(Long idU) {
+		userRepository.enableUser(idU);
+		
+	}
+
+	
+
+	@Override
+	public void releaseUserFromService(Long idU) {
+		
+			userRepository.releaseUserfromAllServiceActif(idU);
+		
+	}
+	
+	
+	
 
 	
 }

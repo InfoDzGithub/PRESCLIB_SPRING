@@ -3,6 +3,7 @@ package presc_lib.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +17,7 @@ import presc_lib.exception.ResourceNotFoundException;
 import presc_lib.metier.IValidationMetier;
 
 @RestController 
+@CrossOrigin("*")
 public class ValidationRestService {
 	@Autowired
 	private IValidationMetier iValidationMetier;

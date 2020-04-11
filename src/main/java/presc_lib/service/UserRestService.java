@@ -4,6 +4,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +24,7 @@ import presc_lib.metier.IUserMetier;
 import presc_lib.metier.MailService;
 
 @RestController
+@CrossOrigin("*")
 public class UserRestService {
 	@Autowired
 	private IUserMetier iUserMetier;
@@ -71,17 +76,33 @@ public class UserRestService {
 	
 	
 
-	@RequestMapping(value = "/archiveUser/{id}",method = RequestMethod.PUT)
-	public void stop(@PathVariable Long id) {
+	@RequestMapping(value = "/archiveUser/{id}",method = RequestMethod.DELETE)
+	public boolean stop(@PathVariable Long id) {
+		
 		iUserMetier.stop(id);
+		return true;
 	}
-
+	
+	@RequestMapping(value = "/enableUser/{id}",method = RequestMethod.GET)
+	public boolean enableUser(@PathVariable Long id) {
+		iUserMetier.enableUser(id);
+		return true;
+		
+	}
+    
+	@RequestMapping(value = "/searchUserByEmail",method = RequestMethod.GET)
+	public User findUserByEmail(@RequestParam(name="email") String email) throws EntityException {
+		return iUserMetier.findUserByEmail(email);
+	}
 	@RequestMapping(value = "/searchUser",method = RequestMethod.GET)
-	public List<User> searchUser(@RequestParam(name="mc",defaultValue="") String mc) throws EntityException,ResourceNotFoundException {
+	public Page<User> searchUser(
+			@RequestParam(name="mc",defaultValue="") String mc,
+			@RequestParam(name="page",defaultValue="0") int page,
+			@RequestParam(name="size",defaultValue="5") int size) throws EntityException,ResourceNotFoundException {
 		
 		try {
-			List<User> ListeUser=iUserMetier.searchUser(mc+"%");
-						if(ListeUser.size()==0)
+			Page<User> ListeUser=iUserMetier.searchUser(mc+"%",  PageRequest.of(page, size));
+						if(ListeUser==null)
 						{
 							
 							throw new ResourceNotFoundException("user not found");
@@ -123,7 +144,9 @@ public class UserRestService {
 							throw new ResourceNotFoundException("You haven't account sorry!");
 						}
                          String content="Bonjour "+user.getNom() +"Votre password perdu: "+user.getPassword();
-						mailService.send(user.getEmail(), "bouchekiflatifa13@gmail.com", "Recuperation de mot de passe oublier", content);
+                        
+						mailService.send(user.getEmail(), "a.presclib@gmail.com", "Recuperation de mot de passe oublier", content);
+						 //System.out.print(user.getPasswordTemporelle()+"hh");
 			
 		} catch (EntityException e) {
 			throw new EntityException("Internal Server Exception while getting exception");
@@ -131,7 +154,12 @@ public class UserRestService {
     }
 
 
-
+	@RequestMapping(value = "/releaseUserFromAllActifService/{id}",method = RequestMethod.GET)
+	public void releaseUserFromService(@PathVariable Long id) 
+	{
+		 iUserMetier.releaseUserFromService(id);
+	}
+	
 
 
 

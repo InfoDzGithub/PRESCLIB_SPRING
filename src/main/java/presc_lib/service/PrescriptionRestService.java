@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +19,7 @@ import presc_lib.exception.ResourceNotFoundException;
 import presc_lib.metier.IPrescriptionMetier;
 
 @RestController
+@CrossOrigin("*")
 public class PrescriptionRestService {
 	@Autowired
    private IPrescriptionMetier iPrescriptionMetier;
