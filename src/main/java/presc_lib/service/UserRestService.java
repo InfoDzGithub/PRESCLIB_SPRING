@@ -1,5 +1,6 @@
 package presc_lib.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -143,10 +144,12 @@ public class UserRestService {
 							
 							throw new ResourceNotFoundException("You haven't account sorry!");
 						}
+						
+						System.out.print("hh");
                          String content="Bonjour "+user.getNom() +"Votre password perdu: "+user.getPassword();
                         
 						mailService.send(user.getEmail(), "a.presclib@gmail.com", "Recuperation de mot de passe oublier", content);
-						 //System.out.print(user.getPasswordTemporelle()+"hh");
+						 
 			
 		} catch (EntityException e) {
 			throw new EntityException("Internal Server Exception while getting exception");

@@ -11,6 +11,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -20,6 +21,8 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.sun.istack.NotNull;
+
+import presc_lib.metier.AES;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -53,14 +56,10 @@ public abstract class User implements Serializable{
 	private String photo;
 	private Boolean etat;
 	
-	@Transient 
-	private  String passwordTemporelle="";
-	/*public  String getPasswordTemporelle() {
-		return passwordTemporelle;
-	}
-	public void setPasswordTemporelle(String passwordTemporelle) {
-		this.passwordTemporelle = passwordTemporelle;
-	}*/
+	//@Transient
+	//private  String passwordTemporelle;
+	
+	
 
 	/*
 	@ManyToMany
@@ -104,13 +103,18 @@ public abstract class User implements Serializable{
 	}
 	@XmlElement(name = "Password")
 	public String getPassword() {
-		return password;
+		AES crypt=new AES();
+		String decryptedString = AES.decrypt(this.password, "ssshhhhhhhhhhh!!!!") ;
+		return decryptedString;
 	}
 	
 	public void setPassword(String password) {
-		passwordTemporelle = password;
+	
+		AES crypt=new AES();
 		
-		 try {
+		this.password=crypt.encrypt(password, "ssshhhhhhhhhhh!!!!");
+		
+		/* try {
 		       MessageDigest md = MessageDigest.getInstance("MD5");
 		        this.password = (new HexBinaryAdapter()).marshal(md.digest(password.getBytes(Charset.forName("UTF-8"))));
 		    
@@ -118,6 +122,8 @@ public abstract class User implements Serializable{
 		    } catch (NoSuchAlgorithmException ex) {
 		        Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
 		    }
+		 
+		 */
 	}
 	public String getNom() {
 		return nom;

@@ -5,6 +5,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -33,12 +34,12 @@ public class UserMetierImp implements IUserMetier{
 	public User save(User entity) {
 		long code = ThreadLocalRandom.current().nextLong(10000,99999);
 		Date date = new Date();
-		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat formatter = new SimpleDateFormat("yyMMddHHmmssSSS");
 		String strDate= formatter.format(date);
 		String password=strDate+code;
 		entity.setEtat(true);
 		entity.setPassword(password);
-		//entity.setPasswordTemporelle(password);
+		
 		String content="Bonjour, \n"+entity.getNom()+" "+entity.getPrenom()+"\n"+"  Voici Votre mot de passe: "+password;
 		try {
 			mailService.send(entity.getEmail(), "a.presclib@gmail.com", "Envoie de mpt passe", content);
