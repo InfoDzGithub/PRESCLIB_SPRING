@@ -14,6 +14,7 @@ import org.springframework.data.repository.query.Param;
 
 import presc_lib.entities.Patient;
 import presc_lib.entities.User;
+import presc_lib.entities.User_Service;
 
 
 public interface UserRepository extends JpaRepository<User, Long>{
@@ -32,6 +33,13 @@ public interface UserRepository extends JpaRepository<User, Long>{
 	User findByEmail(@Param("email")  String email);
 	
 	/*************************************************************************/
+	/**************************************************************************
+	//, Service s where s.id=p.id_service
+	@Query(value = "SELECT p FROM User_Service p where p.id_user= :idU")
+	
+	List<User_Service> findServicesByUser(@Param("idU")  Long id);
+	/***************************************************************/
+	
 	@Transactional
 	@Modifying
     @Query(value = "update User u set u.etat = false where u.id = :idU"

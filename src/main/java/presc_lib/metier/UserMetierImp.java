@@ -20,13 +20,17 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import presc_lib.dao.UserRepository;
+import presc_lib.dao.User_ServiceRepository;
 import presc_lib.entities.Patient;
 import presc_lib.entities.User;
+import presc_lib.entities.User_Service;
 import presc_lib.exception.EntityException;
 @Service
 public class UserMetierImp implements IUserMetier{
     @Autowired
 	private UserRepository userRepository;
+    @Autowired
+	private User_ServiceRepository user_serviceRepository;
     @Autowired
     private MailService mailService;
     
@@ -94,16 +98,9 @@ public class UserMetierImp implements IUserMetier{
 	public User login(String email, String password) // throws EntityException 
 	{
 		String pwd="";
-		MessageDigest md;
-		try {
-			md = MessageDigest.getInstance("MD5");
-			pwd = (new HexBinaryAdapter()).marshal(md.digest(password.getBytes(Charset.forName("UTF-8"))));
-		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        
-		return userRepository.login(email, pwd);
+		AES crypt=new AES();
+		pwd=crypt.encrypt(password, "ssshhhhhhhhhhh!!!!");
+        return userRepository.login(email, pwd);
 	}
 
     
@@ -132,6 +129,13 @@ public class UserMetierImp implements IUserMetier{
 		
 			userRepository.releaseUserfromAllServiceActif(idU);
 		
+	}
+
+	@Override
+	public Page<User_Service> findServicesByUser(Long idU,Pageable p) //throws EntityException {
+	{	
+		
+		return user_serviceRepository.findServicesByUser(idU,p);
 	}
 	
 	

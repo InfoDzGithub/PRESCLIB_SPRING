@@ -44,7 +44,7 @@ public abstract class User implements Serializable{
 	private String adress;
 
 	@Column(name="date_naissance")
-	 @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
+	 @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
 	 @Temporal(TemporalType.DATE)
 	 @NotNull
 	private Date date_naissance;
@@ -101,7 +101,8 @@ public abstract class User implements Serializable{
 	public void setId(Long id) {
 		this.id = id;
 	}
-	@XmlElement(name = "Password")
+	//@XmlElement(name = "Password")
+	@JsonIgnore
 	public String getPassword() {
 		AES crypt=new AES();
 		String decryptedString = AES.decrypt(this.password, "ssshhhhhhhhhhh!!!!") ;

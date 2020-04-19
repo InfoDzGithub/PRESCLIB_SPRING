@@ -2,10 +2,13 @@ package presc_lib.metier;
 
 
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import presc_lib.entities.User;
+import presc_lib.entities.User_Service;
 import presc_lib.exception.EntityException;
 
 public interface IUserMetier extends IGenericMetier<User>
@@ -19,5 +22,6 @@ public interface IUserMetier extends IGenericMetier<User>
 	public User findUserByEmail(String email)throws EntityException;
 	public void enableUser(Long idU);
 	public void releaseUserFromService(Long idU);
+	public Page<User_Service> findServicesByUser(Long idU,Pageable p) throws EntityException;
     
 }

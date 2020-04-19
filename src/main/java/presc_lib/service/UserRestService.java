@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import presc_lib.entities.Patient;
 import presc_lib.entities.Tests;
 import presc_lib.entities.User;
+import presc_lib.entities.User_Service;
 import presc_lib.exception.EntityException;
 import presc_lib.exception.ResourceNotFoundException;
 import presc_lib.metier.IUserMetier;
@@ -43,7 +44,7 @@ public class UserRestService {
 		return iUserMetier.update(id, entity);
 	}
     
-	@RequestMapping(value = "/user/{idU}/service/{idS}",method = RequestMethod.POST)
+	@RequestMapping(value = "/user/{idU}/service/{idS}",method = RequestMethod.GET)
 	public void affecterUserToSerice(@PathVariable Long idU,@PathVariable Long idS) {
 		iUserMetier.affecterUserToSerice(idU, idS);
 	}
@@ -163,8 +164,50 @@ public class UserRestService {
 		 iUserMetier.releaseUserFromService(id);
 	}
 	
+/*
 
+	@RequestMapping(value = "/servicesOccupiedByUser",method = RequestMethod.GET)
+	public Page<Object> servicesOccupiedByUser(
+			@RequestParam(name="id",defaultValue="4") Long id,
+			@RequestParam(name="page",defaultValue="0") int page,
+			@RequestParam(name="size",defaultValue="2") int size) throws EntityException,ResourceNotFoundException {
+		
+		try {
+			Page<Object> Liste=iUserMetier.findServicesByUser(id,  PageRequest.of(page, size));
+						if(Liste==null)
+						{
+							
+							throw new ResourceNotFoundException("services not found");
+						}
+						return Liste;
+			
+		} catch (EntityException e) {
+			throw new EntityException("Internal Server Exception while getting exception");
+				}
+	}
 
+*/
+	
+
+	@RequestMapping(value = "/servicesOccupiedByUser",method = RequestMethod.GET)
+	public Page<User_Service> servicesOccupiedByUser(
+			@RequestParam(name="id") Long id,
+			@RequestParam(name="page",defaultValue="0") int page,
+			@RequestParam(name="size",defaultValue="3") int size) throws EntityException,ResourceNotFoundException {
+		
+		try {
+			Page<User_Service> Liste=iUserMetier.findServicesByUser(id, PageRequest.of(page, size));
+						if(Liste==null)
+						{
+							
+							throw new ResourceNotFoundException("services not found");
+						}
+						return Liste;
+			
+		} catch (EntityException e) {
+			throw new EntityException("Internal Server Exception while getting exception");
+				}
+	}
 
 
 

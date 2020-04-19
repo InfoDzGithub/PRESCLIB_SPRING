@@ -45,9 +45,26 @@ public class User_Service implements Serializable{
 		super();
 		
 	}
+	
+	public User_Service(User user, Service service, Boolean etat, Date dateE, Date dateS) {
+		super();
+		this.user = user;
+		this.service = service;
+		this.etat = etat;
+		this.dateE = dateE;
+		this.dateS = dateS;
+	}
 	public User getUser() {
 		return user;
 	}
+	public Boolean getEtat() {
+		return etat;
+	}
+
+	public void setEtat(Boolean etat) {
+		this.etat = etat;
+	}
+
 	public void setUser(User user) {
 		this.user = user;
 	}
