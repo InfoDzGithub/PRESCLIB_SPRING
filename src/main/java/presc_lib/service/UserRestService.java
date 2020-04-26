@@ -1,5 +1,7 @@
 package presc_lib.service;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -8,13 +10,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import presc_lib.entities.Patient;
 import presc_lib.entities.Tests;
@@ -35,12 +41,29 @@ public class UserRestService {
 	private MailService mailService;
 	
 	@RequestMapping(value = "/users",method = RequestMethod.POST)
-	public User save(@RequestBody User entity) {
-		return iUserMetier.save(entity);
+	public User save(@RequestBody User entity) throws ResourceNotFoundException {
+		
+		
+			boolean checkUser=iUserMetier.checkExistanceUserInfo(entity.getEmail(), entity.getNom(), entity.getPrenom(), entity.getDate_naissance());
+						if(checkUser)
+						{
+							
+							throw new ResourceNotFoundException("User already existe found");
+						}
+						return iUserMetier.save(entity);
+			
+		
 	}
 
 	@RequestMapping(value = "/users/{id}",method = RequestMethod.PUT)
-	public User update(@PathVariable Long id,@RequestBody User entity) {
+	public User update(@PathVariable Long id,@RequestBody User entity) throws ResourceNotFoundException 
+	{
+		boolean checkUser=iUserMetier.nbreUserWithEmail(entity,id);
+		if(!checkUser)
+		{
+			
+			throw new ResourceNotFoundException("User already existe found");
+		}
 		return iUserMetier.update(id, entity);
 	}
     
@@ -53,8 +76,21 @@ public class UserRestService {
 	public List<User> getAll() {
 		return iUserMetier.getAll();
 	}
-
-	@RequestMapping(value = "/user/{idU}/service/{idS}",method = RequestMethod.PUT)
+	
+	
+	@PostMapping(path = "/uploadPhoto/{id}")
+    public void uploadPhoto(MultipartFile file, @PathVariable Long id) throws Exception{
+      iUserMetier.uploadPhoto(file, id);
+    }
+    
+	@GetMapping(path="/photoUser/{id}",produces = MediaType.IMAGE_PNG_VALUE)
+	public byte[] getPhoto(@PathVariable("id") Long id) throws Exception{
+		return iUserMetier.getPhoto(id);
+	}
+	
+	
+	
+	@RequestMapping(value = "/releaseUser/{idU}/FromService/{idS}",method = RequestMethod.GET)
 	public void stopUserFromSerice(@PathVariable Long idU,@PathVariable Long idS) {
 		iUserMetier.stopUserFromSerice(idU, idS);
 	}
@@ -164,16 +200,17 @@ public class UserRestService {
 		 iUserMetier.releaseUserFromService(id);
 	}
 	
-/*
+
+	
 
 	@RequestMapping(value = "/servicesOccupiedByUser",method = RequestMethod.GET)
-	public Page<Object> servicesOccupiedByUser(
-			@RequestParam(name="id",defaultValue="4") Long id,
+	public Page<User_Service> servicesOccupiedByUser(
+			@RequestParam(name="id") Long id,
 			@RequestParam(name="page",defaultValue="0") int page,
-			@RequestParam(name="size",defaultValue="2") int size) throws EntityException,ResourceNotFoundException {
+			@RequestParam(name="size",defaultValue="3") int size) throws EntityException,ResourceNotFoundException {
 		
 		try {
-			Page<Object> Liste=iUserMetier.findServicesByUser(id,  PageRequest.of(page, size));
+			Page<User_Service> Liste=iUserMetier.findServicesByUser(id, PageRequest.of(page, size));
 						if(Liste==null)
 						{
 							
@@ -185,18 +222,16 @@ public class UserRestService {
 			throw new EntityException("Internal Server Exception while getting exception");
 				}
 	}
-
-*/
 	
-
-	@RequestMapping(value = "/servicesOccupiedByUser",method = RequestMethod.GET)
-	public Page<User_Service> servicesOccupiedByUser(
+	
+	@RequestMapping(value = "/historiqueServicesOccupiedByUser",method = RequestMethod.GET)
+	public Page<User_Service> historiueServicesOccupiedByUser(
 			@RequestParam(name="id") Long id,
 			@RequestParam(name="page",defaultValue="0") int page,
 			@RequestParam(name="size",defaultValue="3") int size) throws EntityException,ResourceNotFoundException {
 		
 		try {
-			Page<User_Service> Liste=iUserMetier.findServicesByUser(id, PageRequest.of(page, size));
+			Page<User_Service> Liste=iUserMetier.findHistoriqueServicesByUser(id, PageRequest.of(page, size));
 						if(Liste==null)
 						{
 							

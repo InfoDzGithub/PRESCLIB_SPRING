@@ -102,18 +102,19 @@ public abstract class User implements Serializable{
 		this.id = id;
 	}
 	//@XmlElement(name = "Password")
-	@JsonIgnore
+	//@JsonIgnore
 	public String getPassword() {
-		AES crypt=new AES();
+		//AES dcrpt=new AES();
 		String decryptedString = AES.decrypt(this.password, "ssshhhhhhhhhhh!!!!") ;
+		System.out.println("ccc"+decryptedString);
 		return decryptedString;
 	}
 	
 	public void setPassword(String password) {
 	
-		AES crypt=new AES();
+		//AES crypt=new AES();
 		
-		this.password=crypt.encrypt(password, "ssshhhhhhhhhhh!!!!");
+		this.password=AES.encrypt(password, "ssshhhhhhhhhhh!!!!");
 		
 		/* try {
 		       MessageDigest md = MessageDigest.getInstance("MD5");

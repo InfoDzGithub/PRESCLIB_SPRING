@@ -1,6 +1,8 @@
 package presc_lib.metier;
 
 import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
@@ -17,7 +19,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.multipart.MultipartFile;
 
 import presc_lib.dao.UserRepository;
 import presc_lib.dao.User_ServiceRepository;
@@ -47,11 +54,14 @@ public class UserMetierImp implements IUserMetier{
 		String content="Bonjour, \n"+entity.getNom()+" "+entity.getPrenom()+"\n"+"  Voici Votre mot de passe: "+password;
 		try {
 			mailService.send(entity.getEmail(), "a.presclib@gmail.com", "Envoie de mpt passe", content);
+		
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return userRepository.save(entity);
+		
+		User u=userRepository.save(entity);
+		return u;
 	}
 
 	@Override
@@ -71,6 +81,10 @@ public class UserMetierImp implements IUserMetier{
 		//return userRepository.getOne(id);
 		return userRepository.findById(id).orElse(null);
 	}
+	
+	
+	
+	
 	
 	@Override
 	public void stop(Long id)
@@ -137,6 +151,65 @@ public class UserMetierImp implements IUserMetier{
 		
 		return user_serviceRepository.findServicesByUser(idU,p);
 	}
+
+	@Override
+	public Page<User_Service> findHistoriqueServicesByUser(Long idU, Pageable p) throws EntityException {
+		// TODO Auto-generated method stub
+		return user_serviceRepository.findHistoriqueServicesByUser(idU, p);
+	}
+
+	/*@Override
+	public boolean checkExistanceUserEmail(String email) {
+		// TODO Auto-generated method stub
+		return false;
+	}*/
+
+	@Override
+	public boolean checkExistanceUserInfo(String email,String nom, String prenom, Date dateN) {
+		
+		User u= userRepository.checkUserExistenceByInfo(email, nom, prenom, dateN);
+		if(u!=null)
+			return true;//il ya
+		else return false;// il ya pas
+		
+	}
+
+	@Override
+	public boolean nbreUserWithEmail(User u, Long id) {
+				
+		int nbre=userRepository.nbreUserWithSameEmail(u.getEmail());
+		
+		if(nbre>1) return false;
+		else {
+			if(nbre==0) return true;
+			else if(nbre==1)
+				{
+				User utilisateur=userRepository.findByEmail(u.getEmail());
+				if(utilisateur.getId()==id)
+				return true;
+				else return false;
+				}
+		}
+			
+		return false;
+	}
+
+	@Override
+	public void uploadPhoto(MultipartFile file, Long id) throws Exception {
+		
+		
+	 User p=userRepository.findById(id).orElse(null);
+       p.setPhoto(id+".jpg");
+       Files.write(Paths.get(System.getProperty("user.home")+"/ecom/presclib/"+p.getPhoto()),file.getBytes());
+       userRepository.save(p);
+	}
+    
+	
+    public byte[] getPhoto(Long id) throws Exception{
+        User p=userRepository.findById(id).orElse(null);
+        System.out.print("photo");
+        return Files.readAllBytes(Paths.get(System.getProperty("user.home")+"/ecom/presclib/"+p.getPhoto()));
+    }
 	
 	
 	

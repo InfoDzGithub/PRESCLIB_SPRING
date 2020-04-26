@@ -2,10 +2,12 @@ package presc_lib.metier;
 
 
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
 import presc_lib.entities.User;
 import presc_lib.entities.User_Service;
@@ -23,5 +25,13 @@ public interface IUserMetier extends IGenericMetier<User>
 	public void enableUser(Long idU);
 	public void releaseUserFromService(Long idU);
 	public Page<User_Service> findServicesByUser(Long idU,Pageable p) throws EntityException;
+	public Page<User_Service> findHistoriqueServicesByUser(Long idU,Pageable p) throws EntityException;
+    //public boolean checkExistanceUserEmail(String email);
+    public boolean checkExistanceUserInfo(String email,String nom,String prenom,Date dateN);
+    public boolean nbreUserWithEmail(User u,Long id);
+    public void uploadPhoto(MultipartFile p,Long id) throws Exception;
+    public byte[] getPhoto(Long id) throws Exception;
     
+
+
 }

@@ -15,8 +15,13 @@ import presc_lib.entities.User_Service;
 
 public interface User_ServiceRepository extends JpaRepository<User_Service, Long>
 {
-@Query(value = "SELECT u FROM User_Service u where u.user.id= :idU")
+@Query(value = "SELECT u FROM User_Service u where u.user.id= :idU and u.etat=true")
 	
 	public Page<User_Service> findServicesByUser(@Param("idU")  Long id,Pageable p);
+	
+	
+@Query(value = "SELECT u FROM User_Service u where u.user.id= :idU and u.etat=false")
+	
+	public Page<User_Service> findHistoriqueServicesByUser(@Param("idU")  Long id,Pageable p);
 	
 }

@@ -1,5 +1,6 @@
 package presc_lib.dao;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,12 +33,19 @@ public interface UserRepository extends JpaRepository<User, Long>{
 	@Query(value = "SELECT u FROM User u where u.email= :email")
 	User findByEmail(@Param("email")  String email);
 	
-	/*************************************************************************/
-	/**************************************************************************
-	//, Service s where s.id=p.id_service
-	@Query(value = "SELECT p FROM User_Service p where p.id_user= :idU")
+	/*************************************************************************
+	@Query(value = "SELECT u FROM User u where u.email= :email ")
+	User checkUserExistenceByEmail(@Param("email")  String email);
 	
-	List<User_Service> findServicesByUser(@Param("idU")  Long id);
+	*********************************************************************/
+	@Query(value = "SELECT count(*) FROM User u where u.email= :email" ,nativeQuery = true)
+	int nbreUserWithSameEmail(@Param("email")  String email);
+	
+	
+	/********************************************************************/
+	@Query(value = "SELECT u FROM User u where u.email= :email or u.nom= :nom and u.prenom= :prenom and u.date_naissance= :dateN")
+	User checkUserExistenceByInfo(@Param("email")  String email,@Param("nom")  String nom,@Param("prenom")  String prenom,@Param("dateN")  Date date_naissance);
+	
 	/***************************************************************/
 	
 	@Transactional

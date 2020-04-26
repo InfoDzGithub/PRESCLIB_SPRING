@@ -3,6 +3,8 @@ package presc_lib.metier;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import presc_lib.dao.ServiceRepository;
 import presc_lib.entities.Service;
@@ -39,6 +41,12 @@ public class ServiceMetierImp implements IServiceMetier{
 	public void stop(Long id) {
 		 serviceRepository.archiverService(id);
 		
+	}
+
+	@Override
+	public Page<Service> getAllService(Pageable p) {
+		
+		return serviceRepository.findAll(p);
 	}
 
 }

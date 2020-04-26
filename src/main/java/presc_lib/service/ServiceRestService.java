@@ -3,15 +3,19 @@ package presc_lib.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import presc_lib.entities.Patient;
 import presc_lib.entities.Service;
+import presc_lib.entities.User;
 import presc_lib.exception.EntityException;
 import presc_lib.exception.ResourceNotFoundException;
 import presc_lib.metier.IServiceMetier;
@@ -61,4 +65,24 @@ public class ServiceRestService {
 	public void stop(@PathVariable Long id) {
 		iServiceMetier.stop(id);
 	}
+	
+	@RequestMapping(value = "/AllServices",method = RequestMethod.GET)
+	public Page<Service> allService(
+			@RequestParam(name="page",defaultValue="0") int page,
+			@RequestParam(name="size",defaultValue="3") int size) throws EntityException,ResourceNotFoundException {
+		
+		try {
+			Page<Service> ListeService=iServiceMetier.getAllService(PageRequest.of(page, size));
+						if(ListeService==null)
+						{
+							
+							throw new ResourceNotFoundException("services not found");
+						}
+						return ListeService;
+			
+		} catch (Exception e) {
+			throw new EntityException("Internal Server Exception while getting exception");
+				}
+	}
+
 }
