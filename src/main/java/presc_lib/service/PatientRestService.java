@@ -3,6 +3,8 @@ package presc_lib.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,8 +27,18 @@ public class PatientRestService {
   private IPatientMetier iPatientMetier;
 
 @RequestMapping(value = "/patients",method = RequestMethod.POST)
-public Patient save(@RequestBody Patient entity) {
-	return iPatientMetier.save(entity);
+public Patient save(@RequestBody Patient entity) throws ResourceNotFoundException {
+	
+	
+	boolean checkUser=iPatientMetier.checkExistancePatientInfo(entity.getNom(), entity.getPrenom(), entity.getDate_naissance());
+				if(checkUser)
+				{
+					
+					throw new ResourceNotFoundException("Patient already existe found");
+				}
+				return iPatientMetier.save(entity);
+	
+
 }
 
 @RequestMapping(value = "/patients/{id}",method = RequestMethod.PUT)
@@ -41,11 +53,14 @@ public List<Patient> getAll() {
 
 
 @RequestMapping(value = "/searchPatient",method = RequestMethod.GET)
-public List<Patient> searchPatient(@RequestParam(name="mc",defaultValue="") String mc) throws EntityException,ResourceNotFoundException {
+public Page<Patient> searchPatient(
+		@RequestParam(name="mc",defaultValue="") String mc,
+		@RequestParam(name="page",defaultValue="0") int page,
+		@RequestParam(name="size",defaultValue="5") int size) throws EntityException,ResourceNotFoundException {
 	
 	try {
-		List<Patient> Listepatient=iPatientMetier.searchPatient(mc+"%");
-					if(Listepatient.size()==0)
+		Page<Patient> Listepatient=iPatientMetier.searchPatient(mc+"%" ,PageRequest.of(page, size));
+					if(Listepatient==null)
 					{
 						
 						throw new ResourceNotFoundException("patient not found");
@@ -57,9 +72,29 @@ public List<Patient> searchPatient(@RequestParam(name="mc",defaultValue="") Stri
 			}
 }
 
+@RequestMapping(value = "/serviceHospByPatientt",method = RequestMethod.GET)
+public Page<Historique_Hospitalisation> serviceHosByPatient(
+		@RequestParam(name="id") Long id,
+		@RequestParam(name="page",defaultValue="0") int page,
+		@RequestParam(name="size",defaultValue="3") int size) throws EntityException,ResourceNotFoundException {
+	
+	try {
+		Page<Historique_Hospitalisation> serviceHpatient=iPatientMetier.serviceHospitalizedByPatient(id ,PageRequest.of(page, size));
+					if(serviceHpatient==null)
+					{
+						
+						throw new ResourceNotFoundException("patient has not historique");
+					}
+					
+					return serviceHpatient;
+		
+	} catch (EntityException e) {
+		throw new EntityException("Internal Server Exception while getting exception");
+			}
+}
 
 
-@RequestMapping(value = "/exitPatient/{id}",method = RequestMethod.PUT)
+@RequestMapping(value = "/exitPatient/{id}",method = RequestMethod.DELETE)
 public void sortirPatient(@PathVariable Long id) {
 	iPatientMetier.sortirPatient(id);
 }

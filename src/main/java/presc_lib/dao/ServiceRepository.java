@@ -21,4 +21,10 @@ public interface ServiceRepository extends JpaRepository<Service, Long>{
 	@Query(value = "update Service u set u.etat = false where u.id = :idS", 
 	  nativeQuery = true)
 	void archiverService(@Param("idS")  Long idS);
+	
+	@Transactional 
+	@Modifying
+	@Query(value = "update Service u set u.etat = true where u.id = :idS", 
+	  nativeQuery = true)
+	void enableService(@Param("idS")  Long idS);
 }

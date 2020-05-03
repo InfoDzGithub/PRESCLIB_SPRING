@@ -25,12 +25,17 @@ public interface IUserMetier extends IGenericMetier<User>
 	public void enableUser(Long idU);
 	public void releaseUserFromService(Long idU);
 	public Page<User_Service> findServicesByUser(Long idU,Pageable p) throws EntityException;
+	public List<User_Service> findServicesByUserL(Long idU) throws EntityException;
 	public Page<User_Service> findHistoriqueServicesByUser(Long idU,Pageable p) throws EntityException;
     //public boolean checkExistanceUserEmail(String email);
     public boolean checkExistanceUserInfo(String email,String nom,String prenom,Date dateN);
     public boolean nbreUserWithEmail(User u,Long id);
     public void uploadPhoto(MultipartFile p,Long id) throws Exception;
     public byte[] getPhoto(Long id) throws Exception;
+    //select tous les medecin d'un service selectionné
+    public List<User_Service> findDoctorsOfServiceSelected(Long idS);
+    
+  
     
 
 

@@ -19,7 +19,7 @@ import presc_lib.entities.User_Service;
 
 
 public interface UserRepository extends JpaRepository<User, Long>{
-	@Query(value = "SELECT u FROM User u where u.etat=true ORDER BY nom")
+	@Query(value = "SELECT u FROM User u where u.etat=true and u.role='medecin' ORDER BY nom")
 	public List<User> findAllUsers();
 	
 	/*******************************************************************/

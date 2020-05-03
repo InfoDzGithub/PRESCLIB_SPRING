@@ -1,9 +1,12 @@
 package presc_lib.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -17,11 +20,17 @@ public interface PatientRepository extends JpaRepository<Patient, Long>{
 	public List<Patient> findAllPatient();
 	/************************************************************************************/
 	@Query(value = "SELECT p FROM Patient p where p.nom like :x ORDER BY nom")
-	public List<Patient> searchPatient(@Param("x") String x);
+	public Page<Patient> searchPatient(@Param("x") String x,Pageable p);
 	
 	/*************************************************************************************/
 	@Query(value = "SELECT p FROM Patient p where p.etat=true ORDER BY nom")
 	public List<Patient> findHospitalizedPatient();
+	/************************************************************************************/
+	@Query(value = "SELECT u FROM Patient u where u.nom= :nom and u.prenom= :prenom and u.date_naissance= :dateN")
+	Patient checkPatientExistenceByInfo(@Param("nom")  String nom,@Param("prenom")  String prenom,@Param("dateN")  Date date_naissance);
+	/***********************************************************************************/
+	
+	
 	/**********************************************************************************/
 	@Transactional 
 	@Modifying

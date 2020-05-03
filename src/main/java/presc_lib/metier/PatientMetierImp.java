@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +13,8 @@ import presc_lib.dao.Historique_HospitalisationRepository;
 import presc_lib.dao.PatientRepository;
 import presc_lib.entities.Historique_Hospitalisation;
 import presc_lib.entities.Patient;
+import presc_lib.entities.User;
+import presc_lib.exception.EntityException;
 
 @Service
 public class PatientMetierImp implements IPatientMetier{
@@ -21,14 +25,14 @@ public class PatientMetierImp implements IPatientMetier{
 	
 	@Override
 	public Patient save(Patient entity) {
-		entity.setEtat(true);
+		entity.setEtat(false);
 		return patientRepository.save(entity);
 	}
 
 	@Override
 	public Patient update(Long id, Patient entity) {
 		entity.setId(id);
-		entity.setEtat(true);
+		//entity.setEtat(true);
 		return patientRepository.save(entity);
 	}
 
@@ -65,10 +69,15 @@ public class PatientMetierImp implements IPatientMetier{
 	@Override
 	public Historique_Hospitalisation affecterPatient(Historique_Hospitalisation entity) {
 		//System.out.println("service  id: "+entity.getService().getId());
+		
 		patientRepository.deLibererPatient(entity.getPatient().getId(),entity.getService().getId());
 		entity.setEtat(true);
 		entity.setDate_entre(new Date());
-		return historiqueHRepository.save(entity);
+		
+				Historique_Hospitalisation a=historiqueHRepository.save(entity);
+				
+				return  a;
+	
 	}
 
 	@Override
@@ -79,9 +88,27 @@ public class PatientMetierImp implements IPatientMetier{
 	}
 
 	@Override
-	public List<Patient> searchPatient(String mc) {
+	public Page<Patient> searchPatient(String mc,Pageable p) {
 		
-		return patientRepository.searchPatient(mc);
+		return patientRepository.searchPatient(mc,p);
+	}
+
+	@Override
+	public Page<Historique_Hospitalisation> serviceHospitalizedByPatient(Long idP, Pageable p) throws EntityException {
+		
+		Page<Historique_Hospitalisation>u=historiqueHRepository.findServicesHospByPatient(idP,p);
+		
+		return u;
+	}
+	
+	@Override
+	 public boolean checkExistancePatientInfo(String nom,String prenom,Date dateN){
+		
+		Patient u= patientRepository.checkPatientExistenceByInfo(nom, prenom, dateN);
+		if(u!=null)
+			return true;//il ya
+		else return false;// il ya pas
+		
 	}
 
 }

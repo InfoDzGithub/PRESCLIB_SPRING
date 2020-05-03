@@ -61,9 +61,14 @@ public class ServiceRestService {
 		}
 
     
-	@RequestMapping(value = "/archiveService/{id}",method = RequestMethod.PUT)
+	@RequestMapping(value = "/archiveService/{id}",method = RequestMethod.GET)
 	public void stop(@PathVariable Long id) {
 		iServiceMetier.stop(id);
+	}
+	
+	@RequestMapping(value = "/enableService/{id}",method = RequestMethod.GET)
+	public void enable(@PathVariable Long id) {
+		iServiceMetier.enableService(id);
 	}
 	
 	@RequestMapping(value = "/AllServices",method = RequestMethod.GET)

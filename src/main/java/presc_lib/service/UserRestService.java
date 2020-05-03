@@ -202,7 +202,7 @@ public class UserRestService {
 	
 
 	
-
+//sous forme page
 	@RequestMapping(value = "/servicesOccupiedByUser",method = RequestMethod.GET)
 	public Page<User_Service> servicesOccupiedByUser(
 			@RequestParam(name="id") Long id,
@@ -222,6 +222,25 @@ public class UserRestService {
 			throw new EntityException("Internal Server Exception while getting exception");
 				}
 	}
+//sous forme liste
+	@RequestMapping(value = "/ListServicesOccupiedByUser",method = RequestMethod.GET)
+	public List<User_Service> servicesOccupiedByUserL(
+			@RequestParam(name="id") Long id) throws EntityException,ResourceNotFoundException {
+		
+		try {
+			List<User_Service> Liste=iUserMetier.findServicesByUserL(id);
+						if(Liste==null)
+						{
+							
+							throw new ResourceNotFoundException("not yet Affected");
+						}
+						return Liste;
+			
+		} catch (EntityException e) {
+			throw new EntityException("Internal Server Exception while getting exception");
+				}
+	}
+	
 	
 	
 	@RequestMapping(value = "/historiqueServicesOccupiedByUser",method = RequestMethod.GET)
@@ -244,9 +263,23 @@ public class UserRestService {
 				}
 	}
 
-
-
-
+	@RequestMapping(value = "/doctorsOFSelectedService",method = RequestMethod.GET)
+	public List<User_Service> findDoctorsOfServiceSelected(
+			@RequestParam(name="id") Long id) throws EntityException,ResourceNotFoundException {
+		
+		try {
+			List<User_Service> Liste=iUserMetier.findDoctorsOfServiceSelected(id);
+						if(Liste==null)
+						{
+							
+							throw new ResourceNotFoundException("any doctors is found");
+						}
+						return Liste;
+			
+		} catch (Exception e) {
+			throw new EntityException("Internal Server Exception while getting exception");
+				}
+	}
 
 
 

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -12,19 +13,27 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sun.istack.NotNull;
 
 @Entity
 public class Patient implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private int CNI;
+	private Integer CNI=0;
 	private String profession;
 	private String nom;
 	private String prenom;
 	private String adress;
+	@Column(name="date_naissance")
+	 @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
+	 @Temporal(TemporalType.DATE)
+	 @NotNull
 	private Date date_naissance;
 	private String sexe;
 	private String telephone;
@@ -44,10 +53,10 @@ public class Patient implements Serializable{
 	}
 	
 	
-	public Patient(int cNI, String profession, String nom, String prenom, String adress, Date date_naissance,
+	public Patient(Integer cNI, String profession, String nom, String prenom, String adress, Date date_naissance,
 			String sexe, String telephone, String group_sanguin, Service service) {
 		super();
-		CNI = cNI;
+		this.CNI = cNI;
 		this.profession = profession;
 		this.nom = nom;
 		this.prenom = prenom;
@@ -73,10 +82,13 @@ public class Patient implements Serializable{
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public int getCNI() {
+	public Integer getCNI() {
+		
 		return CNI;
 	}
-	public void setCNI(int cNI) {
+	public void setCNI(Integer cNI) {
+		
+		System.out.println("cniSET"+cNI);
 		CNI = cNI;
 	}
 	public String getProfession() {
@@ -133,7 +145,7 @@ public class Patient implements Serializable{
 	public void setEtat(Boolean etat) {
 		this.etat = etat;
 	}
-	@JsonIgnore
+	//@JsonIgnore
 	public Service getService() {
 		return service;
 	}

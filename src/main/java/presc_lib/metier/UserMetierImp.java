@@ -151,6 +151,13 @@ public class UserMetierImp implements IUserMetier{
 		
 		return user_serviceRepository.findServicesByUser(idU,p);
 	}
+	
+	@Override
+	public List<User_Service> findServicesByUserL(Long idU) //throws EntityException {
+	{	
+		
+		return user_serviceRepository.findServicesByUserL(idU);
+	}
 
 	@Override
 	public Page<User_Service> findHistoriqueServicesByUser(Long idU, Pageable p) throws EntityException {
@@ -210,6 +217,12 @@ public class UserMetierImp implements IUserMetier{
         System.out.print("photo");
         return Files.readAllBytes(Paths.get(System.getProperty("user.home")+"/ecom/presclib/"+p.getPhoto()));
     }
+
+	@Override
+	public List<User_Service> findDoctorsOfServiceSelected(Long idS) {
+		
+		return user_serviceRepository.findDoctorsOfServiceSelected(idS);
+	}
 	
 	
 	

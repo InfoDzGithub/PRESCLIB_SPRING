@@ -19,9 +19,19 @@ public interface User_ServiceRepository extends JpaRepository<User_Service, Long
 	
 	public Page<User_Service> findServicesByUser(@Param("idU")  Long id,Pageable p);
 	
+//list
+@Query(value = "SELECT u FROM User_Service u where u.user.id= :idU and u.etat=true")
 	
+	public List<User_Service> findServicesByUserL(@Param("idU")  Long id);
+	
+
 @Query(value = "SELECT u FROM User_Service u where u.user.id= :idU and u.etat=false")
 	
 	public Page<User_Service> findHistoriqueServicesByUser(@Param("idU")  Long id,Pageable p);
+
+@Query(value = "SELECT u FROM User_Service u where u.service.id= :idS and u.user.role='medecin' and u.user.etat=true and u.etat=true")
 	
+	public List<User_Service> findDoctorsOfServiceSelected(@Param("idS")  Long id);
+	
+
 }

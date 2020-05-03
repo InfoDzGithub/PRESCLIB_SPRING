@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import presc_lib.dao.Historique_HospitalisationRepository;
+import presc_lib.dao.PatientRepository;
 import presc_lib.dao.ServiceRepository;
 import presc_lib.entities.Service;
 
@@ -13,6 +15,11 @@ import presc_lib.entities.Service;
 public class ServiceMetierImp implements IServiceMetier{
      @Autowired
 	private ServiceRepository serviceRepository;
+     @Autowired
+ 	private Historique_HospitalisationRepository historiqueHRepository;
+     @Autowired
+ 	private PatientRepository patientRepository;
+     
 	@Override
 	public Service save(Service entity) {
 		entity.setEtat(true);
@@ -39,7 +46,20 @@ public class ServiceMetierImp implements IServiceMetier{
 
 	@Override
 	public void stop(Long id) {
+		  //stop le service
 		 serviceRepository.archiverService(id);
+		 //stop les patient hospitalizer ds le service
+		 List<Long>l=historiqueHRepository.findpatientHospInService(id);
+		 System.out.print("liste"+l.size());
+		 for(int i=0;i< l.size();i++)
+		 {
+			 patientRepository.libererPatient(l.get(i));
+			 System.out.print("p"+l.get(i));
+		 }
+		 
+		 historiqueHRepository.stopService(id);
+		 //stop les user travaille dans les service
+		 historiqueHRepository.releaseServicefromUser(id);
 		
 	}
 
@@ -48,5 +68,13 @@ public class ServiceMetierImp implements IServiceMetier{
 		
 		return serviceRepository.findAll(p);
 	}
+
+	@Override
+	public void enableService(Long idS) {
+		serviceRepository.enableService(idS);
+		
+	}
+
+	
 
 }
