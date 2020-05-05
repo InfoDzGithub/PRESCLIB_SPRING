@@ -37,6 +37,12 @@ public interface Historique_HospitalisationRepository extends JpaRepository<Hist
 			+ "h.etat = false , h.date_sortie= SYSDATE() where h.etat=true and  h.id_service = :idS", 
 	  nativeQuery = true)
 	public void stopService(@Param("idS") Long idS);
+	/********************************************************************************/
+	@Query(value = "SELECT p FROM Historique_Hospitalisation p  where p.etat=true and p.patient.id =:idU")
+	public Historique_Hospitalisation findCurrentServicesInByPatient(@Param("idU") Long id);
+
+	
+	
 	/*********************************************************************************/
 	@Transactional 
 	@Modifying

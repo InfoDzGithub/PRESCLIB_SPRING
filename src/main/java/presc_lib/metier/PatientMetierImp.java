@@ -111,4 +111,16 @@ public class PatientMetierImp implements IPatientMetier{
 		
 	}
 
+	@Override
+	public Historique_Hospitalisation findCurrentServicesInByPatient(Long idP) throws EntityException {
+		
+		return historiqueHRepository.findCurrentServicesInByPatient(idP);
+	}
+
+	@Override
+	public Historique_Hospitalisation getOne(Long idH) throws EntityException {
+		// TODO Auto-generated method stub
+		return historiqueHRepository.findById(idH).orElse(null);
+	}
+
 }

@@ -3,6 +3,9 @@ package presc_lib.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -10,9 +13,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import presc_lib.entities.Historique_Hospitalisation;
 import presc_lib.entities.Prescription;
 import presc_lib.exception.EntityException;
 import presc_lib.exception.ResourceNotFoundException;
@@ -81,6 +86,52 @@ public Prescription getById(@PathVariable Long id)throws EntityException,Resourc
 public void stop(@PathVariable Long id) {
 	iPrescriptionMetier.stop(id);
 }
+
+
+
+@RequestMapping(value = "/allPatientPrescriptionByService",method = RequestMethod.GET)
+public Page<Prescription> allPatientPrescriptionByService(
+		@RequestParam(name="id") Long idH,
+		@RequestParam(name="page",defaultValue="0") int page,
+		@RequestParam(name="size",defaultValue="5") int size)throws EntityException,ResourceNotFoundException {
+	
+	 try {
+		 Page<Prescription> presc=iPrescriptionMetier.allPatientPrescriptionByService(idH,PageRequest.of(page, size));
+						if(presc==null)
+						{
+							
+							throw new ResourceNotFoundException("has not Prescription yet on this service");
+						}
+						return presc;
+			
+		} catch (EntityException e) {
+			throw new EntityException("Internal Server Exception while getting exception");
+				}
+}
+
+//All prescription in service where patient réside
+@RequestMapping(value = "/allPrescriptionInCurrentService",method = RequestMethod.GET)
+public Page<Prescription> allPrescriptionInCurrentService(
+		@RequestParam(name="id") Long idH,
+		@RequestParam(name="page",defaultValue="0") int page,
+		@RequestParam(name="size",defaultValue="5") int size)throws EntityException,ResourceNotFoundException {
+	
+	 try {
+		 Page<Prescription> presc=iPrescriptionMetier.allPrescriptionInCurrentService(idH,PageRequest.of(page, size));
+						if(presc==null)
+						{
+							
+							throw new ResourceNotFoundException("has not Prescription yet on this service");
+						}
+						return presc;
+			
+		} catch (EntityException e) {
+			throw new EntityException("Internal Server Exception while getting exception");
+				}
+}
+
+
+
 
 
 

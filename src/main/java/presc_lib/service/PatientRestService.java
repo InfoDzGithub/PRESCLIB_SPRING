@@ -139,4 +139,53 @@ public List<Patient> hospitalizedPatient() {
 }
 
 
+
+
+
+
+@RequestMapping(value = "/currentServicesResideInPatient/{id}",method = RequestMethod.GET)
+public Historique_Hospitalisation currentServicesInByPatient(@PathVariable Long id) throws EntityException,ResourceNotFoundException {
+	try {
+		Historique_Hospitalisation currntS=iPatientMetier.findCurrentServicesInByPatient(id);
+					if(currntS==null)
+					{
+						
+						throw new ResourceNotFoundException("patient not affected yet");
+					}
+					return currntS;
+		
+	} catch (EntityException e) {
+		throw new EntityException("Internal Server Exception while getting exception");
+			}
+}
+
+
+@RequestMapping(value = "/getOneH/{id}",method = RequestMethod.GET)
+public Historique_Hospitalisation getOne(@PathVariable Long id) throws EntityException,ResourceNotFoundException {
+	try {
+		Historique_Hospitalisation currntS=iPatientMetier.getOne(id);
+					if(currntS==null)
+					{
+						
+						throw new ResourceNotFoundException("Historique not found");
+					}
+					return currntS;
+		
+	} catch (EntityException e) {
+		throw new EntityException("Internal Server Exception while getting exception");
+			}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

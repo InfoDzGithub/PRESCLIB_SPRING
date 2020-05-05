@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 
-import javax.persistence.Column;
+
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
-import com.sun.istack.NotNull;
+
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -41,11 +41,9 @@ public abstract class Prescription implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@Column(name="dateP")
-	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
-	@Temporal(TemporalType.DATE)
-	@NotNull
-  private Date dateP;
+	 //@JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss Z", timezone = "Algeria")
+	 private Date dateP = new Date();
+	//private Date dateP; 
   private Boolean etat;
   
 @ManyToOne
@@ -96,6 +94,7 @@ public Boolean getEtat() {
 public void setEtat(Boolean etat) {
 	this.etat = etat;
 }
+
 public Patient getPatient() {
 	return patient;
 }

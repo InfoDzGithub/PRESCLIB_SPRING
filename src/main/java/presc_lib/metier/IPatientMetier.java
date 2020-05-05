@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 
 import presc_lib.entities.Historique_Hospitalisation;
 import presc_lib.entities.Patient;
@@ -19,5 +20,7 @@ public interface IPatientMetier extends IGenericMetier<Patient>{
     public Page<Patient> searchPatient(String mc,Pageable p) throws EntityException;
     public Page<Historique_Hospitalisation> serviceHospitalizedByPatient(Long idP,Pageable p) throws EntityException;
     public boolean checkExistancePatientInfo(String nom,String prenom,Date dateN);
+    public Historique_Hospitalisation findCurrentServicesInByPatient(Long idP)throws EntityException;;
+    public Historique_Hospitalisation getOne(Long idH)throws EntityException;
 
 }
