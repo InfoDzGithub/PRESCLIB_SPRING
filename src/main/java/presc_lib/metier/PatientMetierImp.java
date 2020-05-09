@@ -11,9 +11,9 @@ import org.springframework.stereotype.Service;
 
 import presc_lib.dao.Historique_HospitalisationRepository;
 import presc_lib.dao.PatientRepository;
+import presc_lib.dao.PrescriptionRepository;
 import presc_lib.entities.Historique_Hospitalisation;
 import presc_lib.entities.Patient;
-import presc_lib.entities.User;
 import presc_lib.exception.EntityException;
 
 @Service
@@ -22,6 +22,8 @@ public class PatientMetierImp implements IPatientMetier{
 	private PatientRepository patientRepository;
 	@Autowired
 	private Historique_HospitalisationRepository historiqueHRepository;
+	@Autowired
+	private PrescriptionRepository prescriptionRepository;
 	
 	@Override
 	public Patient save(Patient entity) {
@@ -63,6 +65,8 @@ public class PatientMetierImp implements IPatientMetier{
 	public void sortirPatient(Long idP) {
 		historiqueHRepository.sortir(idP);
 		patientRepository.libererPatient(idP);
+		prescriptionRepository.stopPrescription(idP);
+		
 		
 	}
 

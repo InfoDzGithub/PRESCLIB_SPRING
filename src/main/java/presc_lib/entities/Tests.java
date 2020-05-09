@@ -12,6 +12,7 @@ public class Tests extends Contenu implements Serializable{
  
    private String nom_test;
    private int nbre_par_jr;
+   private String remarque;
    
 public Tests() 
 {
@@ -19,10 +20,19 @@ public Tests()
 		// TODO Auto-generated constructor stub
 }
  
- public Tests(Prescription prescription, String nom_test, int nbre_par_jr) {
+ public Tests(Prescription prescription, String nom_test, int nbre_par_jr,String remarque) {
 	super(prescription);
 	this.nom_test = nom_test;
 	this.nbre_par_jr = nbre_par_jr;
+	this.remarque=remarque;
+}
+
+public String getRemarque() {
+	return remarque;
+}
+
+public void setRemarque(String remarque) {
+	this.remarque = remarque;
 }
 
 public String getNom_test() {

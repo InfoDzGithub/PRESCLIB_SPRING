@@ -132,7 +132,10 @@ public Page<Prescription> allPrescriptionInCurrentService(
 
 
 
-
+@RequestMapping(value = "/nbrePrescriptionActifInHosp",method = RequestMethod.GET)
+public int nbrePrescriptionActifInHosp(@RequestParam(name="id") Long idH) {
+	return iPrescriptionMetier.nbrePatientPrescriptionByHosp(idH);
+}
 
 
 

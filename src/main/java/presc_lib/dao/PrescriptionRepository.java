@@ -22,17 +22,23 @@ public interface PrescriptionRepository extends JpaRepository<Prescription, Long
 	@Query(value = "SELECT p FROM Prescription p where p.etat=true ORDER BY dateP")
 	public List<Prescription> findActivatePrescription();
 	/***********************************************************************************/
-	@Query(value = "SELECT * FROM Prescription p where p.id_service= :idS and p.id_patient =:idP and p.datep>= :dateE and p.datep<= :dateS",nativeQuery = true)
-	public Page<Prescription> allPatientPrescriptionByService(@Param("idP")  Long idP,@Param("idS")  Long idS,@Param("dateE")Date date_entre,@Param("dateS")Date date_sortie,Pageable p);
+	//tt les prescription in periode D'hospitalisation
+	@Query(value = "SELECT * FROM Prescription p where  p.id_patient=:idP and p.datep>= :dateE and p.datep<= :dateS",nativeQuery = true)
+	public Page<Prescription> allPatientPrescriptionByService(@Param("idP")  Long idP,@Param("dateE")Date date_entre,@Param("dateS")Date date_sortie,Pageable p);
+	
+	/***********************************************************************************/
+	//nbre prescription actif par hospitalisation
+	@Query(value = "SELECT count(*) FROM Prescription p where  p.id_patient =:idP and p.etat=true and p.datep>= :dateE and p.datep<= :dateS",nativeQuery = true)
+	public int nbrePatientPrescriptionByHosp(@Param("idP")  Long idP,@Param("dateE")Date date_entre,@Param("dateS")Date date_sortie);
 	
 	/********************************************************************************/
-	@Query(value = "SELECT * FROM Prescription p where p.id_service= :idS and p.id_patient =:idP and p.datep>= :dateE",nativeQuery = true)
-	public Page<Prescription> allPrescriptionInCurrentService(@Param("idP")  Long idP,@Param("idS")  Long idS,@Param("dateE")Date date_entre,Pageable p);
+	@Query(value = "SELECT * FROM Prescription p where p.id_patient =:idP and p.datep>= :dateE",nativeQuery = true)
+	public Page<Prescription> allPrescriptionInCurrentService(@Param("idP")  Long idP,@Param("dateE")Date date_entre,Pageable p);
 	
 	/*******************************************************************************/
 	@Transactional 
 	@Modifying
-	@Query(value = "update Prescription u set u.etat = false where u.id = :idP", 
+	@Query(value = "update Prescription u set u.etat = false where u.id_patient = :idP", 
 	  nativeQuery = true)
 	public void stopPrescription(@Param("idP")  Long idP);
 	

@@ -13,6 +13,7 @@ public class Traitement extends Contenu implements Serializable{
   private String remarque;
   private String voix;
   private int rythme;
+  private int dosage;
   
   
   public Traitement() {
@@ -23,12 +24,25 @@ public class Traitement extends Contenu implements Serializable{
 
 
 public Traitement(Prescription prescription, String nom_traitement, String remarque, String voix,
-		int rythme) {
+		int rythme,int dosage) {
 	super(prescription);
 	this.nom_traitement = nom_traitement;
 	this.remarque = remarque;
 	this.voix = voix;
 	this.rythme = rythme;
+	this.dosage=dosage;
+}
+
+
+
+public int getDosage() {
+	return dosage;
+}
+
+
+
+public void setDosage(int dosage) {
+	this.dosage = dosage;
 }
 
 

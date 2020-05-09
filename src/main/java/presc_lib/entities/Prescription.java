@@ -45,6 +45,7 @@ public abstract class Prescription implements Serializable{
 	 private Date dateP = new Date();
 	//private Date dateP; 
   private Boolean etat;
+  private String type;
   
 @ManyToOne
 	@JoinColumn(name="id_patient")
@@ -68,13 +69,20 @@ public Prescription() {
 	super();
 	// TODO Auto-generated constructor stub
 }
-public Prescription(Patient patient, Service serv, User medecin, User secretaire) {
+public Prescription(Patient patient, Service serv, User medecin, User secretaire,String type) {
 	super();
 	//this.dateP = date;
 	this.patient = patient;
 	this.serv = serv;
 	this.medecin = medecin;
 	this.secretaire = secretaire;
+	this.type=type;
+}
+public String getType() {
+	return type;
+}
+public void setType(String type) {
+	this.type = type;
 }
 public Long getId() {
 	return id;

@@ -72,11 +72,11 @@ public class PrescriptionMetierImp implements IPrescriptionMetier{
 		
 		Historique_Hospitalisation h=historiqueHRepository.findById(idH).orElse(null);
 		Long idP=h.getPatient().getId();
-		Long idS=h.getService().getId();
+		//Long idS=h.getService().getId();
 		Date dateE=h.getDate_entre();
 		Date dateS=h.getDate_sortie();
 		System.out.print("idP"+idP);
-		Page<Prescription> list=prescriptionRepository.allPatientPrescriptionByService(idP, idS, dateE, dateS, p);
+		Page<Prescription> list=prescriptionRepository.allPatientPrescriptionByService(idP,dateE, dateS, p);
 		System.out.print("bonj");
 		return list;
 	}
@@ -86,8 +86,17 @@ public class PrescriptionMetierImp implements IPrescriptionMetier{
 			throws EntityException {
 		Historique_Hospitalisation h=historiqueHRepository.findById(idH).orElse(null);
 		Long idP=h.getPatient().getId();
-		Long idS=h.getService().getId();
+		//Long idS=h.getService().getId();
 		Date dateE=h.getDate_entre();
-		return prescriptionRepository.allPrescriptionInCurrentService(idP, idS, dateE, p);
+		return prescriptionRepository.allPrescriptionInCurrentService(idP,dateE, p);
+	}
+
+	@Override
+	public int nbrePatientPrescriptionByHosp(Long idH) {
+		Historique_Hospitalisation h=historiqueHRepository.findById(idH).orElse(null);
+		Long idP=h.getPatient().getId();
+		Date dateS=h.getDate_sortie();
+		Date dateE=h.getDate_entre();
+		return prescriptionRepository.nbrePatientPrescriptionByHosp(idP, dateE, dateS);
 	}
 }
