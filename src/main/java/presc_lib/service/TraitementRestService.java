@@ -64,7 +64,7 @@ public class TraitementRestService {
 				throw new EntityException("Internal Server Exception while getting exception");
 					}
 		}
-	@RequestMapping(value = "/stopTraitement/{id}",method = RequestMethod.PUT)
+	@RequestMapping(value = "/stopTraitement/{id}",method = RequestMethod.DELETE)
 	public void stop(@PathVariable Long id) {
 		iTraitementMetier.stop(id);
 	}

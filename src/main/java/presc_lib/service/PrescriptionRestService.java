@@ -82,9 +82,10 @@ public Prescription getById(@PathVariable Long id)throws EntityException,Resourc
 				}
 }
 
-@RequestMapping(value = "/archivePrescription/{id}",method = RequestMethod.PUT)
+//ici on archive une prescription(by id prescription) ainsi que leurs le contenu
+@RequestMapping(value = "/archivePrescription/{id}",method = RequestMethod.GET)
 public void stop(@PathVariable Long id) {
-	iPrescriptionMetier.stop(id);
+	iPrescriptionMetier.archivePresc(id);
 }
 
 
@@ -136,6 +137,8 @@ public Page<Prescription> allPrescriptionInCurrentService(
 public int nbrePrescriptionActifInHosp(@RequestParam(name="id") Long idH) {
 	return iPrescriptionMetier.nbrePatientPrescriptionByHosp(idH);
 }
+
+
 
 
 

@@ -9,11 +9,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
+import presc_lib.dao.ContenuRepository;
 import presc_lib.dao.Historique_HospitalisationRepository;
 import presc_lib.dao.PatientRepository;
 import presc_lib.dao.PrescriptionRepository;
 import presc_lib.entities.Historique_Hospitalisation;
 import presc_lib.entities.Patient;
+import presc_lib.entities.Prescription;
 import presc_lib.exception.EntityException;
 
 @Service
@@ -24,6 +26,10 @@ public class PatientMetierImp implements IPatientMetier{
 	private Historique_HospitalisationRepository historiqueHRepository;
 	@Autowired
 	private PrescriptionRepository prescriptionRepository;
+	@Autowired
+	private ContenuRepository contenuRepository;
+	
+	
 	
 	@Override
 	public Patient save(Patient entity) {
@@ -66,6 +72,14 @@ public class PatientMetierImp implements IPatientMetier{
 		historiqueHRepository.sortir(idP);
 		patientRepository.libererPatient(idP);
 		prescriptionRepository.stopPrescription(idP);
+		
+		List<Prescription> l=prescriptionRepository.listPrescByPatient(idP);
+		for(int i=0;i<l.size();i++)
+		{
+			Long id=l.get(i).getId();
+			
+			contenuRepository.stopContenu(id);}
+		
 		
 		
 	}

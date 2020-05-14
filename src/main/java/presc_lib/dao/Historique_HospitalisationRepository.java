@@ -40,7 +40,12 @@ public interface Historique_HospitalisationRepository extends JpaRepository<Hist
 	/********************************************************************************/
 	@Query(value = "SELECT p FROM Historique_Hospitalisation p  where p.etat=true and p.patient.id =:idU")
 	public Historique_Hospitalisation findCurrentServicesInByPatient(@Param("idU") Long id);
-
+    /********************************************************************************
+	
+	@Query(value = "SELECT id_patient FROM Historique_Hospitalisation p  where p.etat=true and p.id_service =:idS",nativeQuery = true)
+	public List<Long> findpatientHospInService(@Param("idS") Long idS);
+	
+	
 	
 	
 	/*********************************************************************************/

@@ -8,8 +8,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import presc_lib.dao.ContenuRepository;
 import presc_lib.dao.Historique_HospitalisationRepository;
 import presc_lib.dao.PrescriptionRepository;
+import presc_lib.entities.Contenu;
 import presc_lib.entities.Historique_Hospitalisation;
 import presc_lib.entities.Prescription;
 import presc_lib.exception.EntityException;
@@ -19,7 +21,9 @@ public class PrescriptionMetierImp implements IPrescriptionMetier{
 	private PrescriptionRepository prescriptionRepository;
     @Autowired
 	private Historique_HospitalisationRepository historiqueHRepository;
-	
+    
+    @Autowired
+	private ContenuRepository contenuRepository;
     
     
     
@@ -50,14 +54,17 @@ public class PrescriptionMetierImp implements IPrescriptionMetier{
 		return prescriptionRepository.findById(id).orElse(null);
 	}
  
-	/*public Prescription getId(Long id) 
-	{
-		return prescriptionRepository.findById(id).orElse(null);
-	}*/
-
+	
 	@Override
-	public void stop(Long id) {
-		prescriptionRepository.stopPrescription(id);
+	public void stop(Long idPatient) {
+		//ici on stop tt les préscriptions par patient
+		prescriptionRepository.stopPrescription(idPatient);
+		List<Prescription> l=prescriptionRepository.listPrescByPatient(idPatient);
+		for(int i=0;i<l.size();i++)
+		{
+			Long id=l.get(i).getId();
+			
+			contenuRepository.stopContenu(id);}
 	}
 
 	@Override
@@ -98,5 +105,12 @@ public class PrescriptionMetierImp implements IPrescriptionMetier{
 		Date dateS=h.getDate_sortie();
 		Date dateE=h.getDate_entre();
 		return prescriptionRepository.nbrePatientPrescriptionByHosp(idP, dateE, dateS);
+	}
+
+	@Override
+	public void archivePresc(Long id) {
+		prescriptionRepository.archivePresc(id);
+		contenuRepository.stopContenu(id);
+		
 	}
 }

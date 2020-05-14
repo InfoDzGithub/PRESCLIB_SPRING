@@ -17,5 +17,7 @@ public interface IPrescriptionMetier extends IGenericMetier<Prescription>{
    public Page<Prescription> allPatientPrescriptionByService(Long idH,Pageable p)throws EntityException;
    public Page<Prescription> allPrescriptionInCurrentService(Long idH,Pageable p)throws EntityException;
    public int nbrePatientPrescriptionByHosp(Long idH);
+   //archive une presc ainsi que tt le contenu
+   public void archivePresc(Long id);
    
 }

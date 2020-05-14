@@ -63,7 +63,7 @@ public class TestRestService {
 						}
 			}
 	
-	@RequestMapping(value = "/stopTest/{id}",method = RequestMethod.PUT)
+	@RequestMapping(value = "/stopTest/{id}",method = RequestMethod.DELETE)
 	public void stop(@PathVariable Long id) {
 		iTestMetier.stop(id);
 	}
