@@ -1,4 +1,4 @@
-package presc_lib.metier;
+ package presc_lib.metier;
 
 import java.util.Date;
 import java.util.List;
@@ -22,5 +22,6 @@ public interface IPatientMetier extends IGenericMetier<Patient>{
     public boolean checkExistancePatientInfo(String nom,String prenom,Date dateN);
     public Historique_Hospitalisation findCurrentServicesInByPatient(Long idP)throws EntityException;;
     public Historique_Hospitalisation getOne(Long idH)throws EntityException;
+    public Page<Historique_Hospitalisation> PatientActifParUserAcess(Long idU,Pageable p) throws EntityException;
 
 }

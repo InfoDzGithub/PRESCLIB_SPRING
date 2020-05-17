@@ -138,6 +138,31 @@ public int nbrePrescriptionActifInHosp(@RequestParam(name="id") Long idH) {
 	return iPrescriptionMetier.nbrePatientPrescriptionByHosp(idH);
 }
 
+@RequestMapping(value = "/nbrePrescriptionActifByPatient",method = RequestMethod.GET)
+public int nbrePrescriptionActifByPatient(@RequestParam(name="id") Long id) {
+	return iPrescriptionMetier.nbrePrescriptionActifByPatient(id);
+}
+
+//select la list des prescription actif par patient
+@RequestMapping(value = "/actifPrescriptionByPatient",method = RequestMethod.GET)
+public Page<Prescription> ListprescriptionActifByPatient(
+		@RequestParam(name="id") Long id,
+		@RequestParam(name="page",defaultValue="0") int page,
+		@RequestParam(name="size",defaultValue="5") int size)throws EntityException,ResourceNotFoundException {
+	
+	 try {
+		 Page<Prescription> presc=iPrescriptionMetier.ListPrescriptionActifByPatient(id, PageRequest.of(page, size));
+						if(presc==null)
+						{
+							
+							throw new ResourceNotFoundException("has no actif Prescription");
+						}
+						return presc;
+			
+		} catch (EntityException e) {
+			throw new EntityException("Internal Server Exception while getting exception");
+				}
+}
 
 
 

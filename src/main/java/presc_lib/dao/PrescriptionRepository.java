@@ -30,7 +30,12 @@ public interface PrescriptionRepository extends JpaRepository<Prescription, Long
 	//nbre prescription actif par hospitalisation
 	@Query(value = "SELECT count(*) FROM Prescription p where  p.id_patient =:idP and p.etat=true and p.datep>= :dateE and p.datep<= :dateS",nativeQuery = true)
 	public int nbrePatientPrescriptionByHosp(@Param("idP")  Long idP,@Param("dateE")Date date_entre,@Param("dateS")Date date_sortie);
-	
+	/***************************************************************************************/
+	@Query(value = "SELECT count(*) FROM Prescription p where  p.id_patient =:idP and p.etat=true",nativeQuery = true)
+	public int nbrePrescriptionActifParPAtient(@Param("idP")  Long idP);
+	/*****************************************************************************************/
+	@Query(value = "SELECT p FROM Prescription p where  p.patient.id =:idP and p.etat=true ORDER BY dateP")
+	public Page<Prescription> ListprescriptionActifByPatient(@Param("idP")  Long idP, Pageable p);
 	/********************************************************************************/
 	@Query(value = "SELECT * FROM Prescription p where p.id_patient =:idP and p.datep>= :dateE",nativeQuery = true)
 	public Page<Prescription> allPrescriptionInCurrentService(@Param("idP")  Long idP,@Param("dateE")Date date_entre,Pageable p);

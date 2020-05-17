@@ -177,6 +177,31 @@ public Historique_Hospitalisation getOne(@PathVariable Long id) throws EntityExc
 }
 
 
+@RequestMapping(value = "/patientsActifByUser",method = RequestMethod.GET)
+public Page<Historique_Hospitalisation> PatientActifParUserAcess(
+		@RequestParam(name="id") Long id,
+		@RequestParam(name="page",defaultValue="0") int page,
+		@RequestParam(name="size",defaultValue="3") int size) throws EntityException,ResourceNotFoundException {
+	
+	
+	try {
+		Page<Historique_Hospitalisation> serviceHpatient=iPatientMetier.PatientActifParUserAcess(id,PageRequest.of(page, size));
+					if(serviceHpatient==null)
+					{
+						
+						throw new ResourceNotFoundException("no patients in services");
+					}
+					
+					return serviceHpatient;
+		
+	} catch (EntityException e) {
+		throw new EntityException("Internal Server Exception while getting exception");
+			}
+	
+
+}
+
+
 
 
 

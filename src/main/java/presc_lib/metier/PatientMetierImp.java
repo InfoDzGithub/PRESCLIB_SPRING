@@ -141,4 +141,10 @@ public class PatientMetierImp implements IPatientMetier{
 		return historiqueHRepository.findById(idH).orElse(null);
 	}
 
+	@Override
+	public Page<Historique_Hospitalisation> PatientActifParUserAcess(Long idU, Pageable p) throws EntityException {
+		
+		return historiqueHRepository.PatientActifParUserAcess(idU, p);
+	}
+
 }

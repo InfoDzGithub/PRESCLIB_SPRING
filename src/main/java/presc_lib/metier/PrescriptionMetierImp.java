@@ -113,4 +113,16 @@ public class PrescriptionMetierImp implements IPrescriptionMetier{
 		contenuRepository.stopContenu(id);
 		
 	}
+
+	@Override
+	public int nbrePrescriptionActifByPatient(Long idPatient) {
+		
+		return prescriptionRepository.nbrePrescriptionActifParPAtient(idPatient);
+	}
+
+	@Override
+	public Page<Prescription> ListPrescriptionActifByPatient(Long idPatient, Pageable p) throws EntityException {
+		
+		return prescriptionRepository.ListprescriptionActifByPatient(idPatient, p);
+	}
 }
