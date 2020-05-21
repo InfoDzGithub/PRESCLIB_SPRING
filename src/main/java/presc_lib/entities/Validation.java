@@ -42,6 +42,16 @@ public abstract class Validation implements Serializable{
     //@NotNull
 	private Date dateV;
 	
+	public FicheInfirmier getFicheInfirmier() {
+		return ficheInfirmier;
+	}
+	public void setFicheInfirmier(FicheInfirmier ficheInfirmier) {
+		this.ficheInfirmier = ficheInfirmier;
+	}
+	public void setTimeValidation(Date timeValidation) {
+		this.timeValidation = timeValidation;
+	}
+
 	//@Column(name="timeValidation")
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="HH:mm:ss")
     @Temporal(TemporalType.TIME)
@@ -54,6 +64,10 @@ public abstract class Validation implements Serializable{
 	@ManyToOne
 	@JoinColumn(name="id_infirmier")
     private User infirmier;
+	//
+	@ManyToOne
+	@JoinColumn(name="id_ficheInfirmier")
+    private FicheInfirmier ficheInfirmier;
 	
 	
 	

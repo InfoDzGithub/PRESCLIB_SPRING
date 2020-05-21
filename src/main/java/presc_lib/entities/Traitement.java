@@ -14,6 +14,7 @@ public class Traitement extends Contenu implements Serializable{
   private String voix;
   private int rythme;
   private int dosage;
+  private int nbre_par_jour;
   
   
   public Traitement() {
@@ -24,13 +25,14 @@ public class Traitement extends Contenu implements Serializable{
 
 
 public Traitement(Prescription prescription, String nom_traitement, String remarque, String voix,
-		int rythme,int dosage) {
+		int rythme,int dosage,int nbre_par_jour) {
 	super(prescription);
 	this.nom_traitement = nom_traitement;
 	this.remarque = remarque;
 	this.voix = voix;
 	this.rythme = rythme;
 	this.dosage=dosage;
+	this.nbre_par_jour=nbre_par_jour;
 }
 
 
@@ -70,6 +72,18 @@ public int getRythme() {
 }
 public void setRythme(int rythme) {
 	this.rythme = rythme;
+}
+
+
+
+public int getNbre_par_jour() {
+	return nbre_par_jour;
+}
+
+
+
+public void setNbre_par_jour(int nbre_par_jour) {
+	this.nbre_par_jour = nbre_par_jour;
 }
 
 }

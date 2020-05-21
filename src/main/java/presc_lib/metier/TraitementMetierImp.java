@@ -16,6 +16,9 @@ public class TraitementMetierImp  implements  ITraitementMetier
 	@Override
 	public Traitement save(Traitement entity) {
 		entity.setEtat(true);
+		int nbre=(int)24/entity.getRythme();
+		entity.setNbre_par_jour(nbre);
+		System.out.println("nbre"+nbre);
 		return traitementRepository.save(entity);
 	}
 
@@ -23,6 +26,8 @@ public class TraitementMetierImp  implements  ITraitementMetier
 	public Traitement update(Long id, Traitement entity) {
 		entity.setId(id);
 		entity.setEtat(true);
+		int nbre=(int)24/entity.getRythme();
+		entity.setNbre_par_jour(nbre);
 		return traitementRepository.save(entity);
 	}
 
