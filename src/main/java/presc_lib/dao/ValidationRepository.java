@@ -21,6 +21,11 @@ public interface ValidationRepository extends JpaRepository<Validation, Long>
 	@Query(value = "SELECT * FROM Validation u where u.id_contenu= :idC ",nativeQuery = true)
 	public List<Validation> findValuesByContent(@Param("idC")  Long idC);
 	
+	@Query(value = "SELECT * FROM Validation v where v.id_contenu= :idC And v.id_fiche_infirmier= :idF ORDER BY dateV",nativeQuery = true)
+	public List<Validation> listValidationByContenuAndFile(@Param("idC")  Long idC,@Param("idF")  Long idF);
 	
+	@Query(value = "SELECT * FROM Validation v where  v.id_fiche_infirmier= :idF ORDER BY dateV",nativeQuery = true)
+	public List<Validation> listValidationByFileCare(@Param("idF")  Long idF);
 	
+	////
 }

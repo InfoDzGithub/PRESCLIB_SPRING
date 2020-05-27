@@ -28,6 +28,8 @@ import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 @JsonTypeInfo(use=JsonTypeInfo.Id.NAME,include=JsonTypeInfo.As.PROPERTY,property="type_fiche")
 @JsonSubTypes({
 	@Type(name="SOINS",value=FicheSoin.class),
+	@Type(name="ALIMT",value=FicheAliment.class),
+	@Type(name="MIDCL",value=FicheMedicale.class),
 	@Type(name="SUIVI",value=FicheSuivi.class)
 })
 public class FicheInfirmier implements Serializable {
@@ -37,6 +39,7 @@ public class FicheInfirmier implements Serializable {
 	private Long id;
 	private Date dateF = new Date();
 	private Boolean etat;
+	private int num_chambre;
     @ManyToOne
 	@JoinColumn(name="id_prescription")
     private Prescription prescription;
@@ -81,11 +84,12 @@ public class FicheInfirmier implements Serializable {
 	public void setValidations(Collection<Validation> validations) {
 		this.validations = validations;
 	}
-	public FicheInfirmier(Prescription prescription,Service s,Patient p) {
+	public FicheInfirmier(Prescription prescription,Service s,Patient p,int num_chambre) {
 		super();
 		this.prescription = prescription;
 		this.patient=p;
 		this.service=s;
+		this.num_chambre=num_chambre;
 	}
 	public Patient getPatient() {
 		return patient;
@@ -98,6 +102,12 @@ public class FicheInfirmier implements Serializable {
 	}
 	public void setService(Service service) {
 		this.service = service;
+	}
+	public int getNum_chambre() {
+		return num_chambre;
+	}
+	public void setNum_chambre(int num_chambre) {
+		this.num_chambre = num_chambre;
 	}
 
 }

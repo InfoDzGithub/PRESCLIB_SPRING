@@ -64,7 +64,7 @@ public Boolean getEtat() {
 public void setEtat(Boolean etat) {
 	this.etat = etat;
 }
-@JsonIgnore
+//@JsonIgnore
 public Collection<Validation> getValidations() {
 	return validations;
 }

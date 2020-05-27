@@ -18,6 +18,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
@@ -42,15 +44,7 @@ public abstract class Validation implements Serializable{
     //@NotNull
 	private Date dateV;
 	
-	public FicheInfirmier getFicheInfirmier() {
-		return ficheInfirmier;
-	}
-	public void setFicheInfirmier(FicheInfirmier ficheInfirmier) {
-		this.ficheInfirmier = ficheInfirmier;
-	}
-	public void setTimeValidation(Date timeValidation) {
-		this.timeValidation = timeValidation;
-	}
+	
 
 	//@Column(name="timeValidation")
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="HH:mm:ss")
@@ -82,6 +76,18 @@ public abstract class Validation implements Serializable{
 		this.infirmier = infirmier;
 		
 	}
+	
+	@JsonIgnore
+	public FicheInfirmier getFicheInfirmier() {
+		return ficheInfirmier;
+	}
+	@JsonSetter
+	public void setFicheInfirmier(FicheInfirmier ficheInfirmier) {
+		this.ficheInfirmier = ficheInfirmier;
+	}
+	public void setTimeValidation(Date timeValidation) {
+		this.timeValidation = timeValidation;
+	}
 
 	public Long getId() {
 		return id;
@@ -90,11 +96,11 @@ public abstract class Validation implements Serializable{
 	public void setId(Long id) {
 		this.id = id;
 	}
-
+@JsonIgnore
 	public Contenu getContenu() {
 		return contenu;
 	}
-
+@JsonSetter
 	public void setContenu(Contenu contenu) {
 		this.contenu = contenu;
 	}
@@ -115,6 +121,7 @@ public abstract class Validation implements Serializable{
 		this.timeValidation = timeValidation;
 	}
 
+	
 	public User getInfirmier() {
 		return infirmier;
 	}

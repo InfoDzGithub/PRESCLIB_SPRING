@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import presc_lib.entities.Tests;
@@ -62,5 +63,41 @@ public class ValidationRestService {
 	 * @RequestMapping(value = "/stopValidation",method = RequestMethod.PUT) public
 	 * void stop(@PathVariable Long id) { iValidationMetier.stop(id); }
 	 */
+	
+	@RequestMapping(value = "/validationsByContenuAndFileCare",method = RequestMethod.GET)
+	public List<Validation> validationsByContenuAndFileCare(
+			@RequestParam(name="idC") Long idC,
+			@RequestParam(name="idF") Long idF) throws EntityException,ResourceNotFoundException {
+		try {
+			List<Validation> v=iValidationMetier.listValidationByContenuAndFile(idC, idF);
+						if(v==null)
+						{
+							
+							throw new ResourceNotFoundException("Value not found");
+						}
+						return v;
+			
+		} catch (EntityException e) {
+			throw new EntityException("Internal Server Exception while getting exception");
+				}
+	}
+
+	
+	@RequestMapping(value = "/validationsByFileCare",method = RequestMethod.GET)
+	public List<Validation> validationsByFileCare(
+			@RequestParam(name="idF") Long idF) throws EntityException,ResourceNotFoundException {
+		try {
+			List<Validation> v=iValidationMetier.listValidationByFileCare(idF);
+						if(v==null)
+						{
+							
+							throw new ResourceNotFoundException("Value not found");
+						}
+						return v;
+			
+		} catch (EntityException e) {
+			throw new EntityException("Internal Server Exception while getting exception");
+				}
+	}
 
 }

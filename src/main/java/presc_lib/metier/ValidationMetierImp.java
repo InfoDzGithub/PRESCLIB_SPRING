@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import presc_lib.dao.ValidationRepository;
 import presc_lib.entities.Validation;
+import presc_lib.exception.EntityException;
 
 @Service
 public class ValidationMetierImp implements IValidationMetier{
@@ -49,6 +50,18 @@ private ValidationRepository validationRepository;
 	@Override
 	public List<Validation> getValuesByContent(Long idC) {
 		return  validationRepository.findValuesByContent(idC);
+	}
+
+	@Override
+	public List<Validation> listValidationByContenuAndFile(Long idC, Long idF) throws EntityException {
+		
+		return validationRepository.listValidationByContenuAndFile(idC, idF);
+	}
+
+	@Override
+	public List<Validation> listValidationByFileCare(Long idF) throws EntityException {
+		
+		return validationRepository.listValidationByFileCare(idF);
 	}
 
 	
