@@ -1,5 +1,6 @@
 package presc_lib.metier;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import presc_lib.dao.ContenuRepository;
+import presc_lib.dao.FicheInfirmierRepository;
 import presc_lib.dao.Historique_HospitalisationRepository;
 import presc_lib.dao.PrescriptionRepository;
 import presc_lib.entities.Contenu;
@@ -24,6 +26,8 @@ public class PrescriptionMetierImp implements IPrescriptionMetier{
     
     @Autowired
 	private ContenuRepository contenuRepository;
+    @Autowired
+	private FicheInfirmierRepository ficheInfirmierRepository;
     
     
     
@@ -58,14 +62,29 @@ public class PrescriptionMetierImp implements IPrescriptionMetier{
 	@Override
 	public void stop(Long idPatient) {
 		//ici on stop tt les préscriptions par patient
-		prescriptionRepository.stopPrescription(idPatient);
+		
 		List<Prescription> l=prescriptionRepository.listPrescByPatient(idPatient);
+		prescriptionRepository.stopPrescription(idPatient);
+		ficheInfirmierRepository.archiverFilesByPatient(idPatient);
+		if(l!=null) {
 		for(int i=0;i<l.size();i++)
 		{
-			Long id=l.get(i).getId();
 			
-			contenuRepository.stopContenu(id);}
-	}
+			System.out.print("presc");
+			List<Contenu> listeC =(List<Contenu>) l.get(i).getContenu();
+			if(listeC.size()!=0)
+			{
+			for(int j=0;j<listeC.size();j++)
+			{
+				 System.out.print("Contenu"+listeC.get(j).getId());
+					//listeC.get(j).setEtat(false);
+					contenuRepository.stopContenuById(listeC.get(j).getId());
+					System.out.print("Contenuetat");
+			}
+			}
+			
+		}}}
+	
 
 	@Override
 	public List<Prescription> ActivatePrescription() throws EntityException
@@ -82,9 +101,9 @@ public class PrescriptionMetierImp implements IPrescriptionMetier{
 		//Long idS=h.getService().getId();
 		Date dateE=h.getDate_entre();
 		Date dateS=h.getDate_sortie();
-		System.out.print("idP"+idP);
+		//System.out.print("idP"+idP);
 		Page<Prescription> list=prescriptionRepository.allPatientPrescriptionByService(idP,dateE, dateS, p);
-		System.out.print("bonj");
+		//System.out.print("bonj");
 		return list;
 	}
 
@@ -109,8 +128,22 @@ public class PrescriptionMetierImp implements IPrescriptionMetier{
 
 	@Override
 	public void archivePresc(Long id) {
+		
+		Prescription presc =prescriptionRepository.findById(id).orElse(null);
+		ficheInfirmierRepository.archiverFilesByPresc(id);
 		prescriptionRepository.archivePresc(id);
-		contenuRepository.stopContenu(id);
+		List<Contenu> listeC =(List<Contenu>) presc.getContenu();
+		if(listeC.size()!=0) {
+		for(int j=0;j<listeC.size();j++)
+		{
+			 
+				contenuRepository.stopContenuById(listeC.get(j).getId());
+				
+		}
+	}
+		//contenuRepository.stopContenu(id);
+		//archive File Care
+		//ficheInfirmierRepository.archiverFilesByPresc(id);
 		
 	}
 

@@ -10,9 +10,11 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import presc_lib.dao.ContenuRepository;
+import presc_lib.dao.FicheInfirmierRepository;
 import presc_lib.dao.Historique_HospitalisationRepository;
 import presc_lib.dao.PatientRepository;
 import presc_lib.dao.PrescriptionRepository;
+import presc_lib.entities.Contenu;
 import presc_lib.entities.Historique_Hospitalisation;
 import presc_lib.entities.Patient;
 import presc_lib.entities.Prescription;
@@ -26,6 +28,8 @@ public class PatientMetierImp implements IPatientMetier{
 	private Historique_HospitalisationRepository historiqueHRepository;
 	@Autowired
 	private PrescriptionRepository prescriptionRepository;
+	@Autowired
+	private FicheInfirmierRepository ficheInfirmierRepository;
 	@Autowired
 	private ContenuRepository contenuRepository;
 	
@@ -71,14 +75,33 @@ public class PatientMetierImp implements IPatientMetier{
 	public void sortirPatient(Long idP) {
 		historiqueHRepository.sortir(idP);
 		patientRepository.libererPatient(idP);
-		prescriptionRepository.stopPrescription(idP);
 		
 		List<Prescription> l=prescriptionRepository.listPrescByPatient(idP);
-		for(int i=0;i<l.size();i++)
+		System.out.print("long"+l.size());
+		prescriptionRepository.stopPrescription(idP);
+		ficheInfirmierRepository.archiverFilesByPatient(idP);
+		
+		
+		/*for(int i=0;i<l.size();i++)
 		{
 			Long id=l.get(i).getId();
 			
-			contenuRepository.stopContenu(id);}
+			contenuRepository.stopContenu(id);}*/
+		for(int i=0;i<l.size();i++)
+		{
+			//Long id=l.get(i).getId();
+			System.out.print("presc");
+			List<Contenu> listeC =(List<Contenu>) l.get(i).getContenu();
+			for(int j=0;j<listeC.size();j++)
+			{
+				 System.out.print("Contenu"+listeC.get(j).getId());
+					//listeC.get(j).setEtat(false);
+					contenuRepository.stopContenuById(listeC.get(j).getId());
+					System.out.print("Contenuetat");
+			}
+			
+		}
+		
 		
 		
 		

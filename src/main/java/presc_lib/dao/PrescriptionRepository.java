@@ -40,7 +40,7 @@ public interface PrescriptionRepository extends JpaRepository<Prescription, Long
 	@Query(value = "SELECT * FROM Prescription p where p.id_patient =:idP and p.datep>= :dateE",nativeQuery = true)
 	public Page<Prescription> allPrescriptionInCurrentService(@Param("idP")  Long idP,@Param("dateE")Date date_entre,Pageable p);
 	/*****************************************************************************/
-	@Query(value = "SELECT p FROM Prescription p where p.patient.id =:idP")
+	@Query(value = "SELECT * FROM Prescription p where p.id_patient =:idP and p.etat=true",nativeQuery = true)
 	public List<Prescription> listPrescByPatient(@Param("idP")  Long idP);
 	
 	/********************************Stop les prescriptions par patient***********************************************/
@@ -57,6 +57,7 @@ public interface PrescriptionRepository extends JpaRepository<Prescription, Long
 	@Query(value = "update Prescription u set u.etat = false where u.id= :id",nativeQuery = true
 	  )
 	public void archivePresc(@Param("id")  Long id);
+	
 	
 	
 }

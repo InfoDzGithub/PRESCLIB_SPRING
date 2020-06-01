@@ -15,5 +15,8 @@ import presc_lib.exception.EntityException;
 public interface IFicheInfirmierMetier extends IGenericMetier<FicheInfirmier>{
 	public Page<FicheInfirmier> allCareFileByPrescription(Long idP,Pageable p)throws EntityException;
 	public Page<FicheInfirmier> currentCareFileByPrescription(Long idP,Pageable p)throws EntityException;
-	
+	public void archiveFile(Long idF)throws EntityException;
+	public Page<FicheInfirmier> fileCareHasProb(Long idU,Pageable p)throws EntityException;
+	public Page<FicheInfirmier> fileCareByPresc(Long idP,Pageable p)throws EntityException;
+
 }

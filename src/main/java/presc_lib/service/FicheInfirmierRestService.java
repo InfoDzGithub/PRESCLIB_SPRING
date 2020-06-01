@@ -88,4 +88,65 @@ public class FicheInfirmierRestService {
 				throw new EntityException("Internal Server Exception while getting exception");
 					}
 	}
+	
+	@RequestMapping(value = "/archiveFile",method = RequestMethod.GET)
+	public void archiveFile(
+			@RequestParam(name="id") Long id )throws EntityException,ResourceNotFoundException {
+		
+		 try {
+			 FicheInfirmier f=iFicheInfirmierMetier.getById(id);
+							if(f==null)
+							{
+								
+								throw new ResourceNotFoundException("no file found ");
+							}
+							iFicheInfirmierMetier.archiveFile(id);
+				
+			} catch (EntityException e) {
+				throw new EntityException("Internal Server Exception while getting exception");
+					}
+	}
+	
+	
+	@RequestMapping(value = "/fileAreNotComplete",method = RequestMethod.GET)
+	public Page<FicheInfirmier> fileHaseProb(
+			@RequestParam(name="id") Long id ,
+			@RequestParam(name="page",defaultValue="0") int page,
+			@RequestParam(name="size",defaultValue="3") int size)throws EntityException,ResourceNotFoundException {
+		
+		 try {
+			 Page<FicheInfirmier> f=iFicheInfirmierMetier.fileCareHasProb(id, PageRequest.of(page, size));
+							if(f==null)
+							{
+								
+								throw new ResourceNotFoundException("no file found ");
+							}
+							return f;
+				
+			} catch (EntityException e) {
+				throw new EntityException("Internal Server Exception while getting exception");
+					}
+	}
+	
+	
+	
+	@RequestMapping(value = "/fileCareByPresc",method = RequestMethod.GET)
+	public Page<FicheInfirmier> fileCareByPresc(
+			@RequestParam(name="id") Long id ,
+			@RequestParam(name="page",defaultValue="0") int page,
+			@RequestParam(name="size",defaultValue="3") int size)throws EntityException,ResourceNotFoundException {
+		
+		 try {
+			 Page<FicheInfirmier> f=iFicheInfirmierMetier.fileCareByPresc(id, PageRequest.of(page, size));
+							if(f==null)
+							{
+								
+								throw new ResourceNotFoundException("no file found ");
+							}
+							return f;
+				
+			} catch (EntityException e) {
+				throw new EntityException("Internal Server Exception while getting exception");
+					}
+	}
 }

@@ -68,4 +68,31 @@ public class FicheInfirmierImp implements IFicheInfirmierMetier{
 		Date yesterday = new Date(dateE.getTime() - (1000 * 60 * 60 * 24));
 		return ficheInfirmierRepository.currentCareFileByPrescription(idP,yesterday,dateE, p);
 	}
+
+	@Override
+	public void archiveFile(Long idF) throws EntityException {
+		// TODO Auto-generated method stub
+		ficheInfirmierRepository.archiverFile(idF);
+		
+	}
+
+	@Override
+	public Page<FicheInfirmier> fileCareHasProb(Long idU, Pageable p)
+			throws EntityException {
+		
+		Date dateE=new Date();
+		//Date dateS=new Date();
+		
+		Date yesterday = new Date(dateE.getTime() - (1000 * 60 * 60 * 24));
+		
+		return ficheInfirmierRepository.fileCareHasProb(idU, yesterday, dateE, p);
+	}
+
+	@Override
+	public Page<FicheInfirmier> fileCareByPresc(Long idP, Pageable p) throws EntityException {
+		
+		return ficheInfirmierRepository.fileCareByPresc(idP, p);
+	}
+
+	
 }

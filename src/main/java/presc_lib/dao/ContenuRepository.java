@@ -17,5 +17,11 @@ public interface ContenuRepository extends JpaRepository<Contenu, Long>{
 	  )
 	public void stopContenu(@Param("idP")  Long idP);
 	
+	@Transactional 
+	@Modifying
+	@Query(value = "update Contenu u set u.etat = false where u.id= :idC",nativeQuery = true
+	  )
+	public void stopContenuById(@Param("idC")  Long idP);
+	
 	
 }
