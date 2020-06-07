@@ -5,6 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -28,4 +30,17 @@ public interface ValidationRepository extends JpaRepository<Validation, Long>
 	public List<Validation> listValidationByFileCare(@Param("idF")  Long idF);
 	
 	
+	@Query(value = "SELECT count(*) FROM Validation v where  v.id_fiche_infirmier= :idF and v.etat=false ",nativeQuery = true)
+	public int validationEtatFalse(@Param("idF")  Long idF);
+	
+	
+	
+	
+	
+	
+	@Transactional 
+	@Modifying
+	@Query(value = "update Validation u set u.etat = false where u.id_contenu= :idC",nativeQuery = true
+	  )
+	public void stopValidationByContenu(@Param("idC")  Long idC);
 }

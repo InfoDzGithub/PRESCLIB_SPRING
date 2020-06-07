@@ -20,12 +20,14 @@ private ValidationRepository validationRepository;
 		//date & heur
 		entity.setHeur(new Date());
 		entity.setDateV(new Date());
+		entity.setEtat(true);
 		return validationRepository.save(entity);
 	}
 
 	@Override
 	public Validation update(Long id, Validation entity) {
 		entity.setId(id);
+		entity.setEtat(true);
 	    return validationRepository.save(entity);
 	}
 
@@ -62,6 +64,12 @@ private ValidationRepository validationRepository;
 	public List<Validation> listValidationByFileCare(Long idF) throws EntityException {
 		
 		return validationRepository.listValidationByFileCare(idF);
+	}
+
+	@Override
+	public int validationEtatFalse(Long idF) {
+		// TODO Auto-generated method stub
+		return validationRepository.validationEtatFalse(idF);
 	}
 
 	

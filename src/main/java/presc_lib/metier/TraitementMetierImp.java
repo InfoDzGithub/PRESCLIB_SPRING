@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import presc_lib.dao.TraitementRepository;
+import presc_lib.dao.ValidationRepository;
 import presc_lib.entities.Traitement;
 
 @Service
@@ -13,6 +14,9 @@ public class TraitementMetierImp  implements  ITraitementMetier
 {
 	@Autowired
      private TraitementRepository traitementRepository;
+	
+	@Autowired
+    private ValidationRepository validationRepository;
 	@Override
 	public Traitement save(Traitement entity) {
 		entity.setEtat(true);
@@ -40,6 +44,7 @@ public class TraitementMetierImp  implements  ITraitementMetier
 	@Override
 	public void stop(Long idT) {
 		traitementRepository.stopTraitement(idT);
+		validationRepository.stopValidationByContenu(idT);
 	}
 
 	

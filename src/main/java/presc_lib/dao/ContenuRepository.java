@@ -24,4 +24,6 @@ public interface ContenuRepository extends JpaRepository<Contenu, Long>{
 	public void stopContenuById(@Param("idC")  Long idP);
 	
 	
+	
+	
 }

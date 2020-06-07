@@ -6,11 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import presc_lib.dao.TestRepository;
+import presc_lib.dao.ValidationRepository;
 import presc_lib.entities.Tests;
 @Service
 public class TestMetierImp implements ITestMetier {
 	@Autowired
 	private TestRepository testRepository;
+	@Autowired
+    private ValidationRepository validationRepository;
 
 	@Override
 	public Tests save(Tests entity) {
@@ -40,6 +43,7 @@ public class TestMetierImp implements ITestMetier {
 	@Override
 	public void stop(Long idT) {
 		testRepository.stopTests(idT);
+		validationRepository.stopValidationByContenu(idT);
 		
 	}
 

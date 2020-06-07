@@ -11,5 +11,6 @@ public interface IValidationMetier extends IGenericMetier<Validation>{
     public List<Validation> getValuesByContent(Long idC);
     public List<Validation> listValidationByContenuAndFile(Long idC,Long idF)throws EntityException;
     public List<Validation> listValidationByFileCare(Long idF)throws EntityException;
+    public int validationEtatFalse(Long idF);
 	
 }

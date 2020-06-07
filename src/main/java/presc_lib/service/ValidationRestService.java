@@ -99,5 +99,23 @@ public class ValidationRestService {
 			throw new EntityException("Internal Server Exception while getting exception");
 				}
 	}
+	
+	
+	
+	
+	
+	
+	
+	@RequestMapping(value = "/nbreValidationsDisable",method = RequestMethod.GET)
+	public int validationsDisable(@RequestParam(name="id") Long idF)  
+	{
+		
+			return iValidationMetier.validationEtatFalse(idF);
+						
+						
+			
+		
+	}
+
 
 }

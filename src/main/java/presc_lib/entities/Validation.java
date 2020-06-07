@@ -63,6 +63,7 @@ public abstract class Validation implements Serializable{
 	@JoinColumn(name="id_ficheInfirmier")
     private FicheInfirmier ficheInfirmier;
 	
+	 private Boolean etat;
 	
 	
 	
@@ -128,6 +129,12 @@ public abstract class Validation implements Serializable{
 
 	public void setInfirmier(User infirmier) {
 		this.infirmier = infirmier;
+	}
+	public Boolean getEtat() {
+		return etat;
+	}
+	public void setEtat(Boolean etat) {
+		this.etat = etat;
 	}
 
 	
